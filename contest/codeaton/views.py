@@ -1,22 +1,24 @@
 from django.shortcuts import render, render_to_response
 import os
+import datetime
 # Create your views here.
 
 def contest(request):
-    str=''
-    if request.method == 'POST':
+	string=''
+	if request.method == 'POST':
+		st = str(datetime.datetime.now().microsecond)
+		string = request.POST['code']
+		print(string)
 
-        string = request.POST['code']
-        print(string)
-        f=open('file.c', 'w')
-        f.write(string)
-        print(string)
-        f.close()
-        os.system('gcc file.c')
-        os.system('a.exe > output.txt')
-        output = open('output.txt', 'r')
-        str = output.read()
-        output.close()
-
-
-    return render_to_response('index.html', {'output' : str} );
+		f=open(st + '.c', 'w')
+		f.write(string)
+		f.close()
+		os.system('gcc ' + st + '.c -o ' + st +'.o')
+		os.system(st + '.o > ' + st + '.txt')
+		output = open(st + '.txt', 'r')
+		string = output.read()
+		output.close()
+		os.system('del ' + st + '.c');
+		os.system('del ' + st + '.o');
+		os.system('del ' + st + '.txt');
+	return render_to_response('index.html', {'output' : string} );

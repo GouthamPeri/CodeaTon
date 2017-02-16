@@ -1,13 +1,44 @@
+{% load static %}
 <html>
+<style>
+    .CodeMirror {
+        border: 2px solid #000;
+        margin:20px;
+    }
 
+</style>
+<head>
+    <meta charset="utf-8"/>
+
+    <link rel=stylesheet href="https://codemirror.net/lib/codemirror.css">
+    <link rel=stylesheet href="https://codemirror.net/doc/docs.css">
+    <script src="https://codemirror.net/lib/codemirror.js"></script>
+    <script src="https://codemirror.net/mode/xml/xml.js"></script>
+    <script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="https://codemirror.net/mode/clike/clike.js"></script>
+    <script src="https://codemirror.net/mode/css/css.js"></script>
+    <script src="https://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
+
+    <script src="https://codemirror.net/doc/activebookmark.js"></script>
+</head>
 <body>
     <form method="post">
-        <textarea name="code" rows="30" cols="50"></textarea>
+        <textarea id='editor' name="code"></textarea>
         <input type="submit" value="submit">
     </form><br>
     <p>
         {{ output }}
     </p>
+    <script>
+        myTextarea = document.getElementById('editor');
+        var editor = CodeMirror.fromTextArea(myTextarea, {
+            lineNumbers: true,
+            mode: "text/x-csrc",
+            matchBrackets: true
+
+        });
+    </script>
 
 </body>
 
