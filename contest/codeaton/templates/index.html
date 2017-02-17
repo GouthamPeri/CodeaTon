@@ -33,11 +33,11 @@
             </center>
     </form>
     <form name="editor" method="post">
-        <div style="postion:absolute; left:1000px" class="w3-center">
-        {{ editor_form.textarea }}
-            </div>
-        <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" value="compile">
-        <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" value="validate">
+        <div style="postion:absolute; left:1000px">
+            {{ editor_form.textarea }}
+        </div>
+        <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" name='compile' value="compile">
+        <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" name='validate' value="validate">
         <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" value="submit">
         <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" value="status">
     </form><br>
