@@ -14,10 +14,10 @@ def compile(user_filename, user_code):
     # errors store
     os.system('gcc -w ' + user_filename + '.c -o ' + user_filename + '.o 2> errors_' + user_filename + '.txt')
     errors = open('errors_' + user_filename + '.txt').read()
+    os.remove(user_filename + '.c')
+    os.remove('errors_' + user_filename + '.txt')
 
     if len(errors) > 0:
-        os.remove(user_filename + '.c')
-        os.remove('errors_' + user_filename + '.txt')
         return errors
     return None
 
@@ -32,9 +32,7 @@ def validate(user_filename, testcases_input_path, testcases_output_path):
             pass_percent += 1
 
     os.remove(user_filename + '.txt')
-    os.remove('errors_' + user_filename + '.txt')
     os.remove(user_filename + '.o')
-    os.remove(user_filename + '.c')
     return pass_percent/count
 
 
@@ -48,6 +46,7 @@ def contest(request):
         if request.POST.get('compile'):
             result = compile(user_filename, request.POST['textarea'])
             if result is None:
+                os.remove(user_filename + '.o')
                 result = "Compiled Successfully!"
         elif request.POST.get('validate'):
             errors = compile(user_filename, request.POST['textarea'])
