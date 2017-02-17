@@ -11,7 +11,7 @@
     <meta charset="utf-8"/>
     <link rel=stylesheet href="{% static 'codemirror2/lib/codemirror.css' %}">
     <script src="{% static 'codemirror2/lib/codemirror.js' %}"></script>
-    <script src="{% static 'codemirror2/addon/matchbrackets.js' %}"></script>
+    <script src="{% static 'codemirror2/addon/edit/matchbrackets.js' %}"></script>
 
     <!--<script src="https://codemirror.net/doc/activebookmark.js"></script>-->
 
@@ -19,9 +19,9 @@
 
 </head>
 <body>
-    <form method="post">
-        {{ txtarea }}
-        <input type="submit" value="submit">
+    <form name="editor" method="post">
+        {{ txtarea.textarea }}
+        <input onclick = "document.forms['editor'].submit()" type="submit" value="submit">
     </form><br>
     <p>
         {{ output }}
