@@ -33,16 +33,20 @@ def compile(user_filename, user_code,language):
         os.system('javac -nowarn ' + user_filename + '/Main.java 2>' + user_filename + '/main_errors.txt')
         errors = open(user_filename + '/main_errors.txt').read()
 
+    elif language=="PYTHON":
+        errors="Python cannot be compiled"
+
     if len(errors) > 0:
         return errors.replace('\n', '<br>')
     return None
 
 
 
-def validate(user_filename, testcases_input_path, testcases_output_path,language):
+def validate(user_filename, testcases_input_path, testcases_output_path,language,sample=False):
     count = 0.0
     pass_percent = 0.0
-    if language=="C" or language=="C++":
+    output=''
+    if language == "C" or language == "C++":
         for filename in os.listdir(testcases_input_path):
             count += 1
             #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
@@ -50,18 +54,42 @@ def validate(user_filename, testcases_input_path, testcases_output_path,language
             if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
                 pass_percent += 1
 
-    if language=="JAVA":
+    if language == "JAVA":
         user_filename = user_filename.replace('\\', '/')
         user_filename = user_filename[:user_filename.rfind('/')]
         for filename in os.listdir(testcases_input_path):
             count += 1
             #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
             os.system("java -classpath " + user_filename + " Main < " + testcases_input_path + filename
-                      + ' > ' + user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt')
+                      + ' > ' + user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt'
+                      + ' 2> ' + user_filename + '/exceptions.txt')
+            errors = open(user_filename + '/exceptions.txt').read()
+            if errors:
+                return errors
             if filecmp.cmp(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt', testcases_output_path + filename):
                 pass_percent += 1
+            if sample:
+                output += '<br>Expected:<br>' + open(testcases_output_path + filename).read() + '<br>Actual:<br>' \
+                          + open(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt') .read()
 
-    return pass_percent/count
+    if language == "PYTHON":
+        for filename in os.listdir(testcases_input_path):
+            count += 1
+            #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
+            os.system('python -W ignore '+ user_filename + '.py < ' + testcases_input_path + filename + ' > '
+                      + user_filename + '.txt' + ' 2> ' + user_filename + '_errors.txt')
+            errors = open(user_filename + '_errors.txt').read()
+            if errors:
+                return errors
+            if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
+                pass_percent += 1
+            if sample:
+                output += '<br>Expected:<br>' + open(testcases_output_path + filename).read() + '<br>Actual:<br>' \
+                          + open(user_filename + '.txt') .read()
+
+    if pass_percent != count:
+        return output + '<br>Testcase pass percentage:' + str(100*pass_percent/count)
+    return 'All Testcases Passed!'
 
 
 def contest(request):
@@ -103,12 +131,17 @@ def contest(request):
                     result = "Compiled Successfully!"
             elif request.POST.get('validate'):
                 errors = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
-                if errors is None:
-                    result = 'Testcases pass percent: ' + str(100 *
-                            validate(dirname + '\\' + user_filename, 'testcases/input/', 'testcases/output/', language))
+                if language == "PYTHON":
+                    user_codefile = open(dirname + '\\' + user_filename + '.py', 'w')
+                    user_codefile.write(request.POST['textarea'])
+                    user_codefile.close()
+                    result = validate(dirname + '\\' + user_filename, 'testcases/input/', 'testcases/output/',
+                                      language, sample=True)
+                elif errors is None:
+                    result = validate(dirname + '\\' + user_filename, 'testcases/input/', 'testcases/output/',
+                                      language, sample=True)
                 else:
                     result = errors
-
             shutil.rmtree(dirname)
             editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form,
