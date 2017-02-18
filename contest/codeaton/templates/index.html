@@ -21,18 +21,10 @@
 
 </head>
 <body>
-    <form name="language_selector" method="post">
-        <center>
-        <select name="language" onchange="document.forms['language_selector'].submit()">
-          <option disabled selected name="C" value="C">Select a Language</option>
-          <option name="C" value="C">C</option>
-          <option name="C++" value="C++">C++</option>
-          <option name="JAVA" value="JAVA">JAVA</option>
-          <option name="PYTHON" value="PYTHON">PYTHON</option>
-        </select>
-        </center>
-    </form>
     <form name="editor" method="post">
+         <center>
+        {{ language_form }}
+        </center>
         <div style="postion:absolute; left:1000px">
             {{ editor_form.textarea }}
         </div>
@@ -42,7 +34,7 @@
         <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-green" value="status">
     </form><br>
     <p>
-        {{ output }}
+        {{ output | safe}}
     </p>
 
 

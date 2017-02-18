@@ -7,31 +7,58 @@ import datetime
 import filecmp
 from . import forms
 
+lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON':'text/x-python'}
+def compile(user_filename, user_code,language):
+    errors=''
+    if language=='C':
+        user_codefile = open(user_filename + '.c', 'w')
+        user_codefile.write(user_code)
+        user_codefile.close()
+        os.system('gcc -w ' + user_filename + '.c -o ' + user_filename + '.o 2> ' + user_filename + '_errors.txt')
+        errors = open(user_filename + '_errors.txt').read()
 
-def compile(user_filename, user_code):
-    user_codefile = open(user_filename + '.c', 'w')
-    user_codefile.write(user_code)
-    user_codefile.close()
+    elif language=='C++':
+        user_codefile = open(user_filename + '.cpp', 'w')
+        user_codefile.write(user_code)
+        user_codefile.close()
+        os.system('g++ -w ' + user_filename + '.cpp -o ' + user_filename + '.o 2> ' + user_filename + '_errors.txt')
+        errors = open(user_filename + '_errors.txt').read()
 
-    # errors store
-    os.system('gcc -w ' + user_filename + '.c -o ' + user_filename + '.o 2> ' + user_filename + '_errors.txt')
-    errors = open(user_filename + '_errors.txt').read()
+    elif language == 'JAVA':
+        user_filename = user_filename.replace('\\','/')
+        user_filename = user_filename[:user_filename.rfind('/')]
+        user_codefile = open(user_filename + "/Main.java", 'w')
+        user_codefile.write(user_code)
+        user_codefile.close()
+        os.system('javac -nowarn ' + user_filename + '/Main.java 2>' + user_filename + '/main_errors.txt')
+        errors = open(user_filename + '/main_errors.txt').read()
 
     if len(errors) > 0:
-        return errors
+        return errors.replace('\n', '<br>')
     return None
 
 
 
-def validate(user_filename, testcases_input_path, testcases_output_path):
+def validate(user_filename, testcases_input_path, testcases_output_path,language):
     count = 0.0
     pass_percent = 0.0
-    for filename in os.listdir(testcases_input_path):
-        count += 1
-        print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-        os.system('" '+ user_filename + '.o < ' + '"' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-        if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
-            pass_percent += 1
+    if language=="C" or language=="C++":
+        for filename in os.listdir(testcases_input_path):
+            count += 1
+            #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
+            os.system('" '+ user_filename + '.o < ' + '"' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
+            if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
+                pass_percent += 1
+
+    if language=="JAVA":
+        user_filename = user_filename.replace('\\', '/')
+        user_filename = user_filename[:user_filename.rfind('/')]
+        for filename in os.listdir(testcases_input_path):
+            count += 1
+            #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
+            os.system("java -classpath " + user_filename + " Main < " + testcases_input_path + filename + ' > ' + user_filename + '.txt')
+            if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
+                pass_percent += 1
 
     return pass_percent/count
 
@@ -39,29 +66,33 @@ def validate(user_filename, testcases_input_path, testcases_output_path):
 def contest(request):
     result=''
     language='C'
-    EditorForm = forms.create_editor_form('text/x-csrc', initial='//Please select your language first')
+    EditorForm = forms.create_editor_form(lang_mode['C'], initial='//Please select your language first')
     editor_form = EditorForm()
+    language_form= forms.create_language_form("C")()
     language_file="/static/codemirror2/mode/clike/clike.js"
     if request.method == 'POST':
-        print(request.POST.get('language'))
+        #print(request.POST.get('language'))
         if request.POST.get('language')=='C':
             language = request.POST.get('language')
-            editor_form = forms.create_editor_form('text/x-csrc', open('initial/c.txt').read())()
+            language_form = forms.create_language_form(language)()
+            editor_form = forms.create_editor_form(lang_mode['C'], open('initial/c.txt').read())()
             language_file = "/static/codemirror2/mode/clike/clike.js"
         elif request.POST.get('language')=='C++':
             language = request.POST.get('language')
-            editor_form = forms.create_editor_form('text/x-c++src', open('initial/cpp.txt').read())()
+            language_form = forms.create_language_form(language)()
+            editor_form = forms.create_editor_form(lang_mode['C++'], open('initial/cpp.txt').read())()
             language_file = "/static/codemirror2/mode/clike/clike.js"
         elif request.POST.get('language')=='JAVA':
             language = request.POST.get('language')
-            print(open('initial/java.txt').read())
-            editor_form = forms.create_editor_form('text/x-java', open('initial/java.txt').read())()
+            language_form = forms.create_language_form(language)()
+            editor_form = forms.create_editor_form(lang_mode['JAVA'], open('initial/java.txt').read())()
             language_file="/static/codemirror2/mode/clike/clike.js"
         elif request.POST.get('language')=='PYTHON':
             language = request.POST.get('language')
-            editor_form = forms.create_editor_form('text/x-python', open('initial/python.txt').read())()
+            language_form = forms.create_language_form(language)()
+            editor_form = forms.create_editor_form(lang_mode['PYTHON'], open('initial/python.txt').read())()
             language_file="/static/codemirror2/mode/python/python.js"
-        else:
+        if request.POST.get('compile') or request.POST.get('validate'):
             user_filename = str(datetime.datetime.now().microsecond)
             dirname = 'executions\\' + user_filename
             os.mkdir(dirname)
@@ -78,6 +109,6 @@ def contest(request):
                     result = errors
 
             shutil.rmtree(dirname)
-            editor_form = EditorForm(request.POST)
+            editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form,
-                                             'language' : mark_safe(language_file)} )
+                                             'language' : mark_safe(language_file), 'language_form' : language_form} )

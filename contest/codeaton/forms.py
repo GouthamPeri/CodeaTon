@@ -11,3 +11,10 @@ def create_editor_form(language_mode, initial):
         }), initial=initial)
     return EditorForm
 
+
+def create_language_form(lang=None):
+    class LanguageForm(forms.Form):
+        language=forms.ChoiceField(choices=[("C","C"),("C++","C++"),("JAVA","JAVA"),("PYTHON","PYTHON")],
+                                   widget=forms.Select(attrs={"onchange":"document.forms['editor'].submit()"},
+                                    ),initial=lang)
+    return LanguageForm
