@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     {% load static %}
-    <title>W3.CSS</title>
+    <title>Code-A-Ton Coding Contest</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static "w3.css"%}"/>
     <body>
         <img src="{%static "acm_logo_final.png"%}" style="width:12%;padding-top:10px;float:left"></img>
         <img src="{%static "preloader.png"%}" style="width:8%;padding-top:10px;float:right"></img>
         <div class="w3-white w3-card-8 w3-padding-16 w3-center">
-            <h1 style="font-family: Georgia, serif;padding-left:180px">CODE-A-TON</h1>
+            <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
         </div>
         <div class="w3-container w3-padding-16" style="background-color:#cccccc">
             <div class="w3-container w3-center" style="padding-top:50px">
@@ -34,7 +34,6 @@
             </div>
             <center>
                 <button style="margin:20px" onclick="document.getElementById('id01').style.display='block'" class="w3-btn w3-green w3-xlarge">Login</button>
-                <button style="margin:20px" onclick="document.getElementById('id02').style.display='block'" class="w3-btn w3-green w3-xlarge">Register</button>
             </center>
             <div>
                 <div id="id01" class="w3-modal">
@@ -61,34 +60,8 @@
 
                 </div>
             </div>
-                <div id="id02" class="w3-modal">
-                <div class="w3-modal-content w3-card-8 w3-animate-zoom w3-round-xlarge" style="width:450px">
-
-                    <div class="w3-center"><br>
-                        <span onclick="document.getElementById('id02').style.display='none'" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright" title="Close Modal">&times;</span>
-                    </div>
-
-
-                    <form class="w3-container" action="/feedback/login" method="POST">
-                        <div class="w3-section w3-center">
-                            <label><b>Enter Username</b><br></label>
-                            <div class="w3-margin-bottom">{{form2.id_no}}<br><br></div>
-                            <label><b>Enter Password</b><br></label>
-                            <div class="w3-margin-bottom"> {{form2.password1 }}<br><br></div>
-                            <label><b>Confirm Password</b><br></label>
-                            <div class="w3-margin-bottom"> {{form2.password2}}<br><br></div>
-                            <button class="w3-btn-block w3-green w3-section w3-padding w3-round" style="width:30%" type="submit">Register</button>
-                        </div>
-                    </form>
-
-                    <div class="w3-container w3-border-top w3-padding-16 w3-light-grey w3-center w3-round-xlarge">
-                        <button onclick="document.getElementById('id02').style.display='none'" type="button" class="w3-btn w3-red w3-round">Cancel</button>
-                    </div>
-
-                </div>
             </div>
             </div>
-        </div>
         <button style="margin:20px;float:right;" onclick="document.getElementById('id03').style.display='block'" class="w3-btn w3-green w3-small" >About Us</button>
         <div id="id03" class="w3-modal">
                 <div class="w3-modal-content w3-card-8 w3-animate-zoom w3-round-xlarge" style="width:450px">
