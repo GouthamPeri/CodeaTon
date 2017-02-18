@@ -18,3 +18,9 @@ def create_language_form(lang=None):
                                    widget=forms.Select(attrs={"onchange":"document.forms['editor'].submit()"},
                                     ),initial=lang)
     return LanguageForm
+
+
+class LoginForm(forms.Form):
+    id_no = forms.CharField(initial="14331A0500", max_length=10)
+    id_no.clean('14331A05D9')
+    crypt_password = forms.CharField(widget=forms.PasswordInput)

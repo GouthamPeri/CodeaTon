@@ -1,5 +1,13 @@
 from django.shortcuts import render, render_to_response
+from django.http import HttpResponse
+from .forms import *
 from django.utils.safestring import mark_safe
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views import View
 from codemirror2.widgets import CodeMirrorEditor
 import os
 import shutil
@@ -146,3 +154,27 @@ def contest(request):
             editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form,
                                              'language' : mark_safe(language_file), 'language_form' : language_form} )
+
+def login_view(request):
+    print("he;;p")
+    if request.POST:
+        if 'crypt_password' in request.POST:
+            form = LoginForm(request)
+            username = request.POST['id_no']
+            password = request.POST['crypt_password']
+            user = authenticate(username=username, password=password)
+            if not user is None:
+                login(request, user)
+                return HttpResponseRedirect('/contest/home')
+            else:
+                return HttpResponse("Invalid Authentication")
+        else:
+            return HttpResponse("<h1>Successfully Registered</h1>")
+    else:
+        form = LoginForm()
+    return render_to_response("home.html", {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('login')
