@@ -14,8 +14,32 @@ import shutil
 import datetime
 import filecmp
 from . import forms
+import subprocess, shlex
+from threading import Timer
+
 
 lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON':'text/x-python'}
+
+
+def run(cmd, input, output, errors, timeout_sec):
+    proc = subprocess.Popen(cmd, stdin=open(input, 'r'), stdout=open(output, 'w'), stderr=open(errors, 'w'))
+    kill_proc = lambda p: p.kill()
+    timer = Timer(timeout_sec, kill_proc, [proc])
+    try:
+        timer.start()
+        proc.communicate()
+    finally:
+        proc.terminate()
+        error = open(errors).read()
+        if error:
+            timer.cancel()
+            return error
+        if not timer.is_alive():
+            open(errors, 'w').write('Time limit Exceeded!\n')
+        timer.cancel()
+        return open(errors).read()
+
+
 def compile(user_filename, user_code,language):
     errors=''
     if language=='C':
@@ -45,32 +69,35 @@ def compile(user_filename, user_code,language):
         errors="Python cannot be compiled"
 
     if len(errors) > 0:
-        return errors.replace('\n', '<br>')
+         return errors.replace('\n', '<br>')
     return None
 
 
-
-def validate(user_filename, testcases_input_path, testcases_output_path,language,sample=False):
+def validate(user_filename, testcases_input_path, testcases_output_path, language, sample=False):
     count = 0.0
     pass_percent = 0.0
     output=''
     if language == "C" or language == "C++":
         for filename in os.listdir(testcases_input_path):
             count += 1
-            #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-            os.system('" '+ user_filename + '.o < ' + '"' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
+            errors = run(user_filename + '.o', testcases_input_path + filename, user_filename + '.txt', user_filename + '_errors.txt', 2)
+            if errors:
+                return errors
             if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
                 pass_percent += 1
-
-    if language == "JAVA":
+    elif language == "JAVA":
         user_filename = user_filename.replace('\\', '/')
         user_filename = user_filename[:user_filename.rfind('/')]
         for filename in os.listdir(testcases_input_path):
             count += 1
+            open(user_filename + '.txt', 'w').close()
             #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-            os.system("java -classpath " + user_filename + " Main < " + testcases_input_path + filename
+            os.system("start java -classpath " + user_filename + " Main < " + testcases_input_path + filename
                       + ' > ' + user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt'
                       + ' 2> ' + user_filename + '/exceptions.txt')
+            errors = timeout(user_filename, '', 1, '/')
+            if errors:
+                return errors
             errors = open(user_filename + '/exceptions.txt').read()
             if errors:
                 return errors
@@ -80,7 +107,7 @@ def validate(user_filename, testcases_input_path, testcases_output_path,language
                 output += '<br>Expected:<br>' + open(testcases_output_path + filename).read() + '<br>Actual:<br>' \
                           + open(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt') .read()
 
-    if language == "PYTHON":
+    elif language == "PYTHON":
         for filename in os.listdir(testcases_input_path):
             count += 1
             #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
@@ -103,6 +130,7 @@ def validate(user_filename, testcases_input_path, testcases_output_path,language
 def contest(request):
     result=''
     language='C'
+
     EditorForm = forms.create_editor_form(lang_mode['C'], initial='//Please select your language first')
     editor_form = EditorForm()
     language_form= forms.create_language_form("C")()
