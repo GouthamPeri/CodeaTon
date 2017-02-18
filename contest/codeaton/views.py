@@ -56,8 +56,9 @@ def validate(user_filename, testcases_input_path, testcases_output_path,language
         for filename in os.listdir(testcases_input_path):
             count += 1
             #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-            os.system("java -classpath " + user_filename + " Main < " + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-            if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
+            os.system("java -classpath " + user_filename + " Main < " + testcases_input_path + filename
+                      + ' > ' + user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt')
+            if filecmp.cmp(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt', testcases_output_path + filename):
                 pass_percent += 1
 
     return pass_percent/count
