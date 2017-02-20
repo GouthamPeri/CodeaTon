@@ -22,7 +22,7 @@ lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON'
 
 
 def run(cmd, input, output, errors, timeout_sec):
-    proc = subprocess.Popen(cmd, stdin=open(input, 'r'), stdout=open(output, 'w'), stderr=open(errors, 'w'))
+    proc = subprocess.Popen(cmd, stdin=open(input, 'r'), stdout=open(output, 'w+'), stderr=open(errors, 'w+'))
     kill_proc = lambda p: p.kill()
     timer = Timer(timeout_sec, kill_proc, [proc])
     try:
@@ -35,7 +35,7 @@ def run(cmd, input, output, errors, timeout_sec):
             timer.cancel()
             return error
         if not timer.is_alive():
-            open(errors, 'w').write('Time limit Exceeded!\n')
+            open(errors, 'w+').write('Time limit Exceeded!\n')
         timer.cancel()
         return open(errors).read()
 
@@ -90,15 +90,9 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
         user_filename = user_filename[:user_filename.rfind('/')]
         for filename in os.listdir(testcases_input_path):
             count += 1
-            open(user_filename + '.txt', 'w').close()
-            #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-            os.system("start java -classpath " + user_filename + " Main < " + testcases_input_path + filename
-                      + ' > ' + user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt'
-                      + ' 2> ' + user_filename + '/exceptions.txt')
-            errors = timeout(user_filename, '', 1, '/')
-            if errors:
-                return errors
-            errors = open(user_filename + '/exceptions.txt').read()
+            errors = run("java -classpath " + user_filename + " Main ", testcases_input_path + filename,
+                        user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt',
+                        user_filename + '/exceptions.txt',2)
             if errors:
                 return errors
             if filecmp.cmp(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt', testcases_output_path + filename):
@@ -111,8 +105,8 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
         for filename in os.listdir(testcases_input_path):
             count += 1
             #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
-            os.system('python -W ignore '+ user_filename + '.py < ' + testcases_input_path + filename + ' > '
-                      + user_filename + '.txt' + ' 2> ' + user_filename + '_errors.txt')
+            errors = run('python -W ignore '+ user_filename + '.py ', testcases_input_path + filename,
+                        user_filename + '.txt',user_filename + '_errors.txt',3)
             errors = open(user_filename + '_errors.txt').read()
             if errors:
                 return errors

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
-from jsonfield import JSONField
+#from jsonfield import JSONField
 
 class Questions(models.Model):
     question_code = models.CharField(max_length=10, primary_key=True)
@@ -11,7 +11,7 @@ class Questions(models.Model):
 
 class Status(models.Model):
     team_name = models.OneToOneField(User, primary_key=True)
-    status = JSONField(blank=True, null=True)
+    #status = JSONField(blank=True, null=True)
     code = models.CharField(max_length=100000)
 
 #status_obj = Status.objects.get(pk=1)
