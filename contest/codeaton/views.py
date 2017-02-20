@@ -10,15 +10,62 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views import View
 from codemirror2.widgets import CodeMirrorEditor
 import os
+from .models import *
 import shutil
 import datetime
 import filecmp
 from . import forms
 import subprocess, shlex
 from threading import Timer
+from django.contrib.auth.signals import user_logged_in
+import json
 
 
 lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON':'text/x-python'}
+
+
+def save(user, question_no, program_code, status=0):
+    question_no = str(question_no)
+    try:
+        team_status = Status.objects.get(team_name=user)
+
+        pass_statuses = json.loads(team_status.status)
+        pass_statuses[question_no] = status
+        team_status.status = json.dumps(pass_statuses)
+
+        program_codes = json.loads(team_status.program_code)
+        program_codes[question_no] = program_code
+        team_status.program_code = json.dumps(program_codes)
+        print(team_status.program_code)
+        if status > pass_statuses[question_no]:
+            try:
+                times = json.loads(team_status.time)
+            except:
+                times = {}
+
+            times[question_no] = str((datetime.datetime.now() - datetime.datetime.strptime(
+                UserLoginTime.objects.get(user=user).login_time, "%b %d, %Y %H:%M:%S")).total_seconds()/60)
+            team_status.time = json.dumps(times)
+        team_status.save()
+
+
+    except Exception as e:
+        print(e)
+        pass_statuses = {}
+        program_codes = {}
+        times = {}
+        pass_statuses[question_no] = status
+        program_codes[question_no] = program_code
+        if status > pass_statuses[question_no]:
+            try:
+                times = json.loads(team_status.time)
+            except:
+                times = {}
+
+            times[question_no] = str((datetime.datetime.now() - datetime.datetime.strptime(
+                UserLoginTime.objects.get(user=user).login_time, "%b %d, %Y %H:%M:%S")).total_seconds() / 60)
+        Status.objects.create(team_name=user, status=json.dumps(pass_statuses),
+                              program_code=json.dumps(program_codes), time=json.dumps(times) if times else None)
 
 
 def run(cmd, input, output, errors, timeout_sec):
@@ -120,15 +167,20 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
         return output + '<br>Testcase pass percentage:' + str(100*pass_percent/count)
     return 'All Testcases Passed!'
 
-
+@login_required()
 def contest(request):
     result=''
     language='C'
+    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S")\
+           + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
+    print(time)
 
     EditorForm = forms.create_editor_form(lang_mode['C'], initial='//Please select your language first')
     editor_form = EditorForm()
     language_form= forms.create_language_form("C")()
     language_file="/static/codemirror2/mode/clike/clike.js"
+
+
     if request.method == 'POST':
         #print(request.POST.get('language'))
         if request.POST.get('language')=='C':
@@ -155,10 +207,13 @@ def contest(request):
             user_filename = str(datetime.datetime.now().microsecond)
             dirname = 'executions\\' + user_filename
             os.mkdir(dirname)
+            #if request.POST.get('save'):
+
             if request.POST.get('compile'):
                 result = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
                 if result is None:
                     result = "Compiled Successfully!"
+                    save(request.user, 1, request.POST['textarea'])
             elif request.POST.get('validate'):
                 errors = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
                 if language == "PYTHON":
@@ -175,10 +230,9 @@ def contest(request):
             shutil.rmtree(dirname)
             editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form,
-                                             'language' : mark_safe(language_file), 'language_form' : language_form} )
+                                             'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time} )
 
 def login_view(request):
-    print("he;;p")
     if request.POST:
         if 'crypt_password' in request.POST:
             form = LoginForm(request)
@@ -187,7 +241,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if not user is None:
                 login(request, user)
-                return HttpResponseRedirect('/contest/home')
+                return HttpResponseRedirect('/contest/main_ques')
             else:
                 return HttpResponse("Invalid Authentication")
         else:
@@ -200,3 +254,14 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('login')
+
+
+def user_logged_in_handler(sender, request, user, **kwargs):
+    try:
+        UserLoginTime.objects.get(user=user)
+    except:
+        UserLoginTime.objects.create(user = user, login_time = datetime.datetime.now().strftime("%b %d, %Y %H:%M:%S"))
+
+
+
+user_logged_in.connect(user_logged_in_handler)
