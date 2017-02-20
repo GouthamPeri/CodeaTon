@@ -14,7 +14,6 @@
                 margin-top:10px;
                 width: 100%;
                 height: 50%;
-                z-index :-1;
             }
             div#demo {
             padding:10px;
@@ -47,7 +46,7 @@
                       <tr>
                       <div style="z-index:1500; margin-top:30px">
                             <span onclick="document.getElementById('q1').style.display='block'" class="w3-btn w3-round-large">Question 1</span>
-                            <div id="q1" class="w3-modal">
+                            <div id="q1" class="w3-modal" style="z-index:100">
                                 <div class="w3-modal-content w3-animate-top w3-card-8">
                                     <header class="w3-container w3-teal">
                                         <span onclick="document.getElementById('q1').style.display='none'"
@@ -66,7 +65,7 @@
                       </div>
                       <div style="margin-top:30px">
                             <span onclick="document.getElementById('q2').style.display='block'" class="w3-btn w3-round-large">Question 2</span>
-                            <div id="q2" class="w3-modal">
+                            <div id="q2" class="w3-modal" style="z-index:100">
                                 <div class="w3-modal-content w3-animate-top w3-card-8">
                                     <header class="w3-container w3-teal">
                                         <span onclick="document.getElementById('q2').style.display='none'"
@@ -87,7 +86,7 @@
                       <tr>
                       <div style="margin-top:30px">
                             <span onclick="document.getElementById('q3').style.display='block'" class="w3-btn w3-round-large">Question 3</span>
-                            <div id="q3" class="w3-modal">
+                            <div id="q3" class="w3-modal" style="z-index:100">
                                 <div class="w3-modal-content w3-animate-top w3-card-8">
                                     <header class="w3-container w3-teal">
                                         <span onclick="document.getElementById('q3').style.display='none'"
@@ -106,7 +105,7 @@
                       </div>
                       <div style="margin-top:30px">
                             <span onclick="document.getElementById('q4').style.display='block'" class="w3-btn w3-round-large">Question 4</span>
-                            <div id="q4" class="w3-modal">
+                            <div id="q4" class="w3-modal" style="z-index:100">
                                 <div class="w3-modal-content w3-animate-top w3-card-8">
                                     <header class="w3-container w3-teal">
                                         <span onclick="document.getElementById('q4').style.display='none'"
@@ -127,7 +126,7 @@
                       <tr>
                       <div style="margin-top:30px">
                             <span onclick="document.getElementById('q5').style.display='block'" class="w3-btn w3-round-large">Question 5</span>
-                            <div id="q5" class="w3-modal">
+                            <div id="q5" class="w3-modal" style="z-index:100">
                                 <div class="w3-modal-content w3-animate-top w3-card-8">
                                     <header class="w3-container w3-teal">
                                         <span onclick="document.getElementById('q5').style.display='none'"
@@ -150,10 +149,10 @@
               </div>
               <div class="w3-col w3-container" style="width:60%">
                   <div style="margin-top:60px">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="compile">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="validate">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="submit">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="status">
+                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="Compile">
+                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="Validate">
+                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Submit">
+                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Status">
                       <div id="demo">
                     <span id="h"></span>
                           <span>:</span>
