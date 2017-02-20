@@ -16,11 +16,16 @@
                 height: 50%;
                 z-index :-1;
             }
-            p {
-               text-align: center;
-              font-size: 60px;
+            div#demo {
+            padding:10px;
+              font-size: 20px;
+              float : right;
             }
-
+            span#h,#m,#s
+            {
+                padding:7px;
+                color : #fff!important;background-color:#565656!important;
+            }
         </style>
         <!--<script src="https://codemirror.net/doc/activebookmark.js"></script>-->
 
@@ -37,7 +42,6 @@
         <form name="editor" method="post">
             <div class="w3-row">
               <div class="w3-col w3-container" style="width:20%;margin-top:100px">
-                  <p id="demo"></p>
                   <center>
                   <table>
                       <tr>
@@ -149,7 +153,15 @@
                     <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="compile">
                     <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="validate">
                     <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="submit">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="status"><br>
+                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="status">
+                      <div id="demo">
+                    <span id="h"></span>
+                          <span>:</span>
+                      <span id="m"></span>
+                          <span>:</span>
+                      <span id="s"></span>
+                          </div>
+                      <br>
                     {{ editor_form.textarea }}
 
                   </div>
@@ -168,8 +180,11 @@
     </div>
         <script>
             //Set the date we're counting down to
-            window.alert(Date())
-            var countDownDate = new Date("Feb 20, 2017 15:37:25").getTime();
+            Date.prototype.addHours = function(h) {
+               this.setTime(this.getTime() + (h*60*60*1000));
+               return this;
+            }
+            var countDownDate = new Date().addHours(4);
 
             // Update the count down every 1 second
             var x = setInterval(function() {
@@ -181,14 +196,15 @@
                 var distance = countDownDate - now;
 
                 // Time calculations for days, hours, minutes and seconds
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                var hours = "" + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = "" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = "" + Math.floor((distance % (1000 * 60)) / 1000);
 
                 // Output the result in an element with id="demo"
-                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
+                pad="00";
+                document.getElementById("h").innerHTML = pad.substring(0, pad.length - hours.length) + hours;
+                document.getElementById("m").innerHTML = pad.substring(0, pad.length - minutes.length) + minutes;
+                document.getElementById("s").innerHTML = pad.substring(0, pad.length - seconds.length) + seconds;
 
                 // If the count down is over, write some text
                 if (distance < 0) {
