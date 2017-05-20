@@ -24,17 +24,23 @@
             {% for question in questions %}
                 <div style="margin-top:32px; margin-bottom:16px" class="w3-card-4 question">
                     <div style="margin-top:32px; margin-bottom:16px">
-                       <table class="w3-table">
+                       <table style="table-layout:fixed" class="w3-table">
                            <tr>
                                <td colspan="4" class="w3-text-blue">
                                    {{ question.question_text }}
                                </td>
                                <td></td>
                            </tr>
-                           <tr><td><br></td></tr>
+                           <tr><td colspan="5"><br></td></tr>
                            <tr>
-                               <td>Your score: {{ status|get_item:question.question_code }} / {{ question.question_marks }}</td>
-                               <td colspan="4">
+                               <td>Max Marks : {{ question.question_marks }}</td>
+                                   <div style="width:100%">
+                                       <td colspan="2" class="w3-center">
+                                            <div class="w3-blue w3-round" style="height:24px;width:{{ status|get_item:question.question_code }}%"><center>{{ status|get_item:question.question_code }}%</center></div>
+                                       </td>
+                                   </div>
+                               <td></td>
+                               <td>
                                    <input onclick="submit('{{ question.question_code }}')" type="submit" class="w3-btn w3-blue w3-hover-green w3-round" value="Solve Question">
                                </td>
                            </tr>
@@ -48,7 +54,7 @@
         </div>
         <div class="w3-col w3-center w3-responsive" style="width:30%; margin-top:32px">
             <h3>Rank</h3>
-            <a href="#">Current Leaderboard</a>
+            <a href="leaderboard" target="_blank">Current Leaderboard</a>
         </div>
     </div>
     <form name="choose_ques" method="get" action="main_ques">

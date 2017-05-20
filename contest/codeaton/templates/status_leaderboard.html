@@ -20,12 +20,12 @@
                     <td>Score</td>
                     <td>Time</td>
                 </tr>
-                {% for form in forms %}
+                {% for student in leaderboard %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ form.team_name }}</td>
-                    <td>{{ form.total_score }}</td>
-                    <td>{{ form.total_time}}</td>
+                    <td>{{ student.team_name }}</td>
+                    <td>{{ student.total_score }}</td>
+                    <td>{{ student.total_time}}</td>
                 </tr>
                 {% endfor %}
             </table>

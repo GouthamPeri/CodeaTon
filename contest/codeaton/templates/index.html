@@ -50,11 +50,26 @@
                      <span id="s"></span>
                 </div>
             </div>
+            <div class="w3-row w3-center">
+                <div class="w3-col" style="width:25%">
+                    <a href="questions" target="_blank"><input type="button" class="w3-btn w3-blue w3-round w3-hover-green" value="All Questions"></a>
+                </div>
+                 <div class="w3-col" style="width:25%">
+                    <a href="leaderboard" target="_blank"><input type="button" class="w3-btn w3-blue w3-round w3-hover-green" value="Leaderboard"></a>
+                </div>
+                <div class="w3-col" style="width:25%">
+                    <div class="w3-green w3-round w3-hover-blue" style="height:24px;width:{{ question.question_marks }}%"><center>{{ question.question_marks }}%</center></div>
+                </div>
+            </div>
+
             <div class="w3-row">
 
                 <div class="w3-col w3-container question">
-                    <h1 class="w3-center"><b>#{{ question.question_code }}</b></h1>
+
                     <div class="w3-container w3-margin w3-card-4">
+                        <div class="w3-center">
+                            <h1 class=""><b>#{{ question.question_code }}</b></h1>
+                        </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Problem statement</b></h2>
                             <h4>{{ question.question_text }}</h4>
@@ -95,10 +110,10 @@
                             {{ editor_form.textarea }}
                          </div>
                          <div class="w3-margin w3-right">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="Compile">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="Validate">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='submit_answer' value="Submit">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Status">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='compile' value="Compile">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='validate' value="Validate">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='submit_answer' value="Submit">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" value="Status">
                          </div>
                          <br>
                          <div class="w3-container">

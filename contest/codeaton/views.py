@@ -32,7 +32,7 @@ def calctime(status):
         total_time+=float(time_object[time])
     status.total_time = float(total_time)
 
-def save(user, question_no, program_code, status=0.0):
+def save(user, question_no, program_code,language, status=0.0):
     try:
         team_status = Status.objects.get(team_name=user)
         question = Questions.objects.get(question_code=question_no)
@@ -41,7 +41,7 @@ def save(user, question_no, program_code, status=0.0):
 
         if status > pass_statuses[question_no]:
             program_codes = json.loads(team_status.program_code)
-            program_codes[question_no] = program_code
+            program_codes[question_no][language] = program_code
             team_status.program_code = json.dumps(program_codes)
             team_status.total_score -= int(pass_statuses[question_no] * question.question_marks)
             pass_statuses[question_no] = status
@@ -62,10 +62,10 @@ def save(user, question_no, program_code, status=0.0):
     except Exception as e:
         question = Questions.objects.get(question_code=question_no)
         pass_statuses = {}
-        program_codes = {}
+        program_codes = {question_no: {}}
         times = {}
         pass_statuses[question_no] = status
-        program_codes[question_no] = program_code
+        program_codes[question_no][language] = program_code
         times[question_no] = str((datetime.datetime.now() - datetime.datetime.strptime(
             UserLoginTime.objects.get(user=user).login_time, "%b %d, %Y %H:%M:%S")).total_seconds() / 60)
         Status.objects.create(team_name=user, status=json.dumps(pass_statuses),
@@ -170,15 +170,24 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
         return (output + '<br>Testcase pass percentage:' + str(100*pass_percent/count), pass_percent/count)
     return ('All Testcases Passed!',1)
 
+def get_saved_code(user,question_code,language):
+    try:
+        status_object = Status.objects.get(team_name=user)
+        return json.loads(status_object.program_code)[question_code][language]
+    except Exception as e:
+        return None
+
 @login_required()
 def contest(request):
     result=''
     language='C'
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S")\
            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
-
-    EditorForm = forms.create_editor_form(lang_mode['C'], initial='//Please select your language first')
-    editor_form = EditorForm()
+    saved_code=get_saved_code(request.user, request.GET['qid'], language)
+    if not saved_code:
+        editor_form = forms.create_editor_form(lang_mode['C'], open('initial/c.txt').read())()
+    else:
+        editor_form = forms.create_editor_form(lang_mode['C'], saved_code)()
     language_form= forms.create_language_form("C")()
     language_file="/static/codemirror2/mode/clike/clike.js"
 
@@ -186,22 +195,38 @@ def contest(request):
         if request.POST.get('language')=='C':
             language = request.POST.get('language')
             language_form = forms.create_language_form(language)()
-            editor_form = forms.create_editor_form(lang_mode['C'], open('initial/c.txt').read())()
+            saved_code = get_saved_code(request.user, request.GET['qid'], language)
+            if not saved_code:
+                editor_form = forms.create_editor_form(lang_mode['C'], open('initial/c.txt').read())()
+            else:
+                editor_form = forms.create_editor_form(lang_mode['C'], saved_code)()
             language_file = "/static/codemirror2/mode/clike/clike.js"
         elif request.POST.get('language')=='C++':
             language = request.POST.get('language')
             language_form = forms.create_language_form(language)()
-            editor_form = forms.create_editor_form(lang_mode['C++'], open('initial/cpp.txt').read())()
+            saved_code = get_saved_code(request.user, request.GET['qid'], language)
+            if not saved_code:
+                editor_form = forms.create_editor_form(lang_mode['C++'], open('initial/cpp.txt').read())()
+            else:
+                editor_form = forms.create_editor_form(lang_mode['C++'], saved_code)()
             language_file = "/static/codemirror2/mode/clike/clike.js"
         elif request.POST.get('language')=='JAVA':
             language = request.POST.get('language')
             language_form = forms.create_language_form(language)()
-            editor_form = forms.create_editor_form(lang_mode['JAVA'], open('initial/java.txt').read())()
+            saved_code = get_saved_code(request.user, request.GET['qid'], language)
+            if not saved_code:
+                editor_form = forms.create_editor_form(lang_mode['JAVA'], open('initial/java.txt').read())()
+            else:
+                editor_form = forms.create_editor_form(lang_mode['JAVA'], saved_code)()
             language_file="/static/codemirror2/mode/clike/clike.js"
         elif request.POST.get('language')=='PYTHON':
             language = request.POST.get('language')
             language_form = forms.create_language_form(language)()
-            editor_form = forms.create_editor_form(lang_mode['PYTHON'], open('initial/python.txt').read())()
+            saved_code = get_saved_code(request.user, request.GET['qid'], language)
+            if not saved_code:
+                editor_form = forms.create_editor_form(lang_mode['PYTHON'], open('initial/python.txt').read())()
+            else:
+                editor_form = forms.create_editor_form(lang_mode['PYTHON'], saved_code)()
             language_file="/static/codemirror2/mode/python/python.js"
         if request.POST.get('compile') or request.POST.get('validate') or request.POST.get('submit_answer'):
             user_filename = str(datetime.datetime.now().microsecond)
@@ -236,12 +261,12 @@ def contest(request):
                     user_codefile.close()
                     result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language)
-                    save(request.user, request.GET['qid'], request.POST['textarea'], result[1])
+                    save(request.user, request.GET['qid'], request.POST['textarea'],language, result[1])
                     result = result[0]
                 elif errors is None:
                     result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language)
-                    save(request.user, request.GET['qid'], request.POST['textarea'], result[1])
+                    save(request.user, request.GET['qid'], request.POST['textarea'],language, result[1])
                     result = result[0]
                 else:
                     result = errors
@@ -262,15 +287,22 @@ def contest(request):
 
 def questions(request):
     question_objects = Questions.objects.all()
-    status_dict = Status.objects.get(team_name=request.user).status
-    json_acceptable_string = status_dict.replace("'", "\"")
-    status_dict = json.loads(json_acceptable_string)
-    for k in status_dict:
-        status_dict[k]*=100
+    try:
+        status_dict = Status.objects.get(team_name=request.user).status
+        json_acceptable_string = status_dict.replace("'", "\"")
+        status_dict = json.loads(json_acceptable_string)
+        for question in question_objects:
+            if question.question_code in status_dict:
+                status_dict[question.question_code] *= 100
+            else:
+                status_dict[question.question_code] = 0
+    except:
+        status_dict = {}
+        for question in question_objects:
+            status_dict[question.question_code] = 0
     for i in range(len(question_objects)):
         question_objects[i].question_text = question_objects[i].question_text[:150] + "...."
-    return render_to_response('questions.html', {'questions': question_objects,'status':status_dict},)
-
+    return render_to_response('questions.html', {'questions': question_objects, 'status': status_dict},)
 
 def login_view(request):
     if request.POST:
@@ -284,11 +316,20 @@ def login_view(request):
                 return HttpResponseRedirect('/contest/questions')
             else:
                 return HttpResponse("Invalid Authentication")
-        else:
-            return HttpResponse("<h1>Successfully Registered</h1>")
+        elif 'password1' in request.POST:
+            reg_form = RegistrationForm(request)
+            username = request.POST['id_no']
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            new_user = User.objects.create()
+            new_user.username = username
+            new_user.set_password(password1)
+            new_user.save()
+            return HttpResponseRedirect('/contest/home')
     else:
         form = LoginForm()
-    return render_to_response("home.html", {'form': form})
+        reg_form = RegistrationForm()
+    return render_to_response("home.html", {'form': form,'reg_form' : reg_form})
 
 
 def not_found(request):
@@ -297,7 +338,7 @@ def not_found(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect('login')
+    return HttpResponseRedirect('home')
 
 
 def user_logged_in_handler(sender, request, user, **kwargs):
@@ -309,7 +350,7 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 
 def leader_board(request):
     status_objects=Status.objects.order_by('-total_score','total_time')
-    return render_to_response('status_leaderboard.html',{'forms': status_objects})
+    return render_to_response('status_leaderboard.html',{'leaderboard': status_objects})
 
 @register.filter
 def get_item(dictionary, key):

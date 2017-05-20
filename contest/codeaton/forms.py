@@ -21,6 +21,10 @@ def create_language_form(lang=None):
 
 
 class LoginForm(forms.Form):
-    id_no = forms.CharField(initial="14331A0500", max_length=10)
-    id_no.clean('14331A05D9')
+    id_no = forms.CharField(max_length=10)
     crypt_password = forms.CharField(widget=forms.PasswordInput)
+
+class RegistrationForm(forms.Form):
+    id_no = forms.CharField(max_length=10)
+    password1 = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput)
