@@ -33,6 +33,7 @@ class Status(models.Model):
     program_code = models.CharField(max_length=100000)
     time = models.CharField(null=True, blank=True, max_length=1000)
     total_score = models.IntegerField(default=0)
+    total_time=models.FloatField(default=0.0)
 
 #status_obj = Status.objects.get(pk=1)
 #status_obj.status = {'name' : 'hello', 'type' : 'text'}

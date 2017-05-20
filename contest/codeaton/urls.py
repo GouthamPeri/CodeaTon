@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'^home', views.login_view),
     url(r'^main_ques', views.contest),
     url(r'^questions', views.questions),
+    url(r'^leaderboard',views.leader_board)
     # url(r'^header', views.header),
 ]

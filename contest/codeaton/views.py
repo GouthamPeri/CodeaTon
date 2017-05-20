@@ -24,6 +24,12 @@ import traceback
 
 lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON':'text/x-python'}
 
+def calctime(status):
+    time_object=status.time
+    total_time=0.0
+    for time in time_object.keys():
+        total_time+=float(time_object[time])
+    status.total_time = float(total_time)
 
 def save(user, question_no, program_code, status=0.0):
     try:
@@ -40,6 +46,7 @@ def save(user, question_no, program_code, status=0.0):
             pass_statuses[question_no] = status
             team_status.status = json.dumps(pass_statuses)
             team_status.total_score += int(status * question.question_marks)
+            calctime(team_status)
             try:
                 times = json.loads(team_status.time)
             except:
@@ -61,7 +68,7 @@ def save(user, question_no, program_code, status=0.0):
         times[question_no] = str((datetime.datetime.now() - datetime.datetime.strptime(
             UserLoginTime.objects.get(user=user).login_time, "%b %d, %Y %H:%M:%S")).total_seconds() / 60)
         Status.objects.create(team_name=user, status=json.dumps(pass_statuses),
-                              program_code=json.dumps(program_codes), time=json.dumps(times) if times else None,total_score=int(status * question.question_marks))
+                              program_code=json.dumps(program_codes), time=json.dumps(times) if times else None,total_score=int(status * question.question_marks),total_time=float(times[question_no]))
 
 
 def run(cmd, input, output, errors, timeout_sec):
@@ -293,5 +300,9 @@ def user_logged_in_handler(sender, request, user, **kwargs):
     except:
         UserLoginTime.objects.create(user = user, login_time = datetime.datetime.now().strftime("%b %d, %Y %H:%M:%S"))
 
+
+def leader_board(request):
+    status_objects=Status.objects.order_by('-total_score','total_time')
+    return render_to_response('status_leaderboard.html',{'forms': status_objects})
 
 user_logged_in.connect(user_logged_in_handler)
