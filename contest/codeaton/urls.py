@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^questions', views.questions),
     url(r'^leaderboard',views.leader_board),
     url(r'^logout',views.logout_view),
+    url(r'^change_password',views.change_password),
     # url(r'^header', views.header),
 ]

@@ -20,10 +20,11 @@
               font-size: 20px;
               float : left;
             }
+            .w3-oxblood,.w3-hover-oxblood:hover{color:#fff!important;background-color:#76323f!important}
             span#h,#m,#s
             {
                 padding:7px;
-                color : #fff!important;background-color:#565656!important;
+                color : #fff!important;background-color:#76323f!important
             }
         </style>
         <!--<script src="https://codemirror.net/doc/activebookmark.js"></script>-->
@@ -34,33 +35,40 @@
     <body>
     <img src="{%static "acm_logo_final.png"%}" style="width:12%;padding-top:10px;float:left"></img>
         <img src="{%static "preloader.png"%}" style="width:8%;padding-top:10px;float:right"></img>
-        <div class="w3-white w3-card-8 w3-padding-16 w3-center">
+        <div class="w3-white w3-card-8 w3-padding-32 w3-center">
             <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
+            <div>
+                <br>
+                <form name="editor" method="post">
+                    <div class="w3-left" style="margin-bottom:16px">
+                        <div class="w3-left" id="timer">
+                             <span id="h"></span>
+                             <span>:</span>
+                             <span id="m"></span>
+                             <span>:</span>
+                             <span id="s"></span>
+                        </div>
+                    </div>
+                    <div class="w3-dropdown-hover w3-oxblood w3-right">
+                        <button class="w3-btn w3-oxblood w3-hover-tan w3-margin-right" onclick="dropFunction()">Hey, {{ username }}</button>
+                        <div class="w3-dropdown-content w3-card-2 w3-light-grey w3-margin-right" style="position:absolute; right:0">
+                          <a style="border-bottom:1px solid lightgrey" href="change_password">Change Password</a>
+                          <a style="border-bottom:1px solid lightgrey" href="logout">Logout</a>
+                        </div>
+                    </div>
+            </div>
         </div>
-    <div>
-
-        <br>
-        <form name="editor" method="post">
-            <div class="w3-row">
-                <div class="w3-margin" id="timer">
-                     <span id="h"></span>
-                     <span>:</span>
-                     <span id="m"></span>
-                     <span>:</span>
-                     <span id="s"></span>
-                </div>
+        <div class="w3-row w3-center">
+            <div class="w3-col" style="width:25%">
+                <a href="questions" target="_blank"><input type="button" class="w3-btn w3-blue w3-round w3-hover-green" value="All Questions"></a>
             </div>
-            <div class="w3-row w3-center">
-                <div class="w3-col" style="width:25%">
-                    <a href="questions" target="_blank"><input type="button" class="w3-btn w3-blue w3-round w3-hover-green" value="All Questions"></a>
-                </div>
-                 <div class="w3-col" style="width:25%">
-                    <a href="leaderboard" target="_blank"><input type="button" class="w3-btn w3-blue w3-round w3-hover-green" value="Leaderboard"></a>
-                </div>
-                <div class="w3-col" style="width:25%">
-                    <div class="w3-green w3-round w3-hover-blue" style="height:24px;width:{{ question.question_marks }}%"><center>{{ question.question_marks }}%</center></div>
-                </div>
+             <div class="w3-col" style="width:25%">
+                <a href="leaderboard" target="_blank"><input type="button" class="w3-btn w3-blue w3-round w3-hover-green" value="Leaderboard"></a>
             </div>
+            <div class="w3-col" style="width:25%">
+                <div class="w3-green w3-round w3-hover-blue" style="height:24px;width:{{ question.question_marks }}%"><center>{{ question.question_marks }}%</center></div>
+            </div>
+        </div>
 
             <div class="w3-row">
 

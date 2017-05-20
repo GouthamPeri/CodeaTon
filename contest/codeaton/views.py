@@ -279,14 +279,16 @@ def contest(request):
     question = Questions.objects.get(question_code=request.GET['qid'])
     if not question:
         return render_to_response('404.html')
-
+    username = request.user.username
 
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form, 'question': question,
-                                             'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time} )
+                                             'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time ,'username':username} )
 
 
 def questions(request):
     question_objects = Questions.objects.all()
+    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
+            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
     try:
         status_dict = Status.objects.get(team_name=request.user).status
         json_acceptable_string = status_dict.replace("'", "\"")
@@ -302,12 +304,13 @@ def questions(request):
             status_dict[question.question_code] = 0
     for i in range(len(question_objects)):
         question_objects[i].question_text = question_objects[i].question_text[:150] + "...."
-    return render_to_response('questions.html', {'questions': question_objects, 'status': status_dict},)
+    username = request.user.username
+    return render_to_response('questions.html', {'questions': question_objects, 'status': status_dict,'username':username, 'time':time},)
 
 def login_view(request):
-    if request.POST:
+    error = ''
+    if request.method == 'POST':
         if 'crypt_password' in request.POST:
-            form = LoginForm(request)
             username = request.POST['id_no']
             password = request.POST['crypt_password']
             user = authenticate(username=username, password=password)
@@ -315,9 +318,8 @@ def login_view(request):
                 login(request, user)
                 return HttpResponseRedirect('/contest/questions')
             else:
-                return HttpResponse("Invalid Authentication")
+                error="Invalid Authentication"
         elif 'password1' in request.POST:
-            reg_form = RegistrationForm(request)
             username = request.POST['id_no']
             password1 = request.POST['password1']
             password2 = request.POST['password2']
@@ -326,10 +328,7 @@ def login_view(request):
             new_user.set_password(password1)
             new_user.save()
             return HttpResponseRedirect('/contest/home')
-    else:
-        form = LoginForm()
-        reg_form = RegistrationForm()
-    return render_to_response("home.html", {'form': form,'reg_form' : reg_form})
+    return render_to_response("home.html", {'form': LoginForm(),'reg_form' : RegistrationForm(),'error':error})
 
 
 def not_found(request):
@@ -349,8 +348,38 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 
 
 def leader_board(request):
+    username = request.user.username
+    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
+            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
     status_objects=Status.objects.order_by('-total_score','total_time')
-    return render_to_response('status_leaderboard.html',{'leaderboard': status_objects})
+    return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,'time':time})
+
+@login_required
+def change_password(request):
+    error = ''
+    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
+            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
+    password_form = ChangePasswordForm()
+    if request.method == 'POST':
+        if not authenticate(username=request.user.username, password=request.POST['password']) is None:
+            try:
+                user = User.objects.get(username=request.user.username)
+                if request.POST['password1'] == request.POST['password2']:
+                    user.set_password(request.POST['password1'])
+                    user.save()
+                    logout(request)
+                    return HttpResponseRedirect("home")
+                else:
+                    error="Passwords mismatch!"
+            except:
+                error = "Error changing password"
+        else:
+            error = "Wrong password!"
+    else:
+        password_form = ChangePasswordForm()
+
+    return render_to_response('change_password.html', {'password_form':password_form, 'error': error,
+                                                       'username':request.user.username,'time':time})
 
 @register.filter
 def get_item(dictionary, key):
