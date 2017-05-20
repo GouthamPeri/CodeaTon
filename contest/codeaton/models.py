@@ -7,8 +7,6 @@ from django.conf import settings
 import json
 
 
-
-
 class UserLoginTime(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
     login_time = models.CharField(max_length=30)
@@ -21,6 +19,8 @@ class Questions(models.Model):
     question_code = models.CharField(max_length=10, primary_key=True)
     question_text = models.CharField(max_length=10000)
     question_marks = models.IntegerField()
+    input_format = models.CharField(max_length=1000)
+    output_format = models.CharField(max_length=1000)
     sample_input = models.CharField(max_length=1000)
     sample_output = models.CharField(max_length=1000)
     constraints = models.CharField(max_length=1000)

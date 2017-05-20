@@ -5,7 +5,7 @@
         <link rel=stylesheet href="{% static 'codemirror2/lib/codemirror.css' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-         <link rel=stylesheet href="{% static 'w3.css' %}">
+        <link rel=stylesheet href="{% static 'w3.css' %}">
         <script src="{% static 'codemirror2/lib/codemirror.js' %}"></script>
         <script src="{% static 'codemirror2/addon/edit/matchbrackets.js' %}"></script>
         <style>
@@ -15,10 +15,10 @@
                 width: 100%;
                 height: 50%;
             }
-            div#demo {
-            padding:10px;
+            div#timer {
+               padding:10px;
               font-size: 20px;
-              float : right;
+              float : left;
             }
             span#h,#m,#s
             {
@@ -38,12 +38,119 @@
             <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
         </div>
     <div>
+
+        <br>
         <form name="editor" method="post">
             <div class="w3-row">
-              <div class="w3-col w3-container" style="width:20%;margin-top:100px">
-                  <center>
-                  <table>
-                      <tr>
+                <div class="w3-margin" id="timer">
+                     <span id="h"></span>
+                     <span>:</span>
+                     <span id="m"></span>
+                     <span>:</span>
+                     <span id="s"></span>
+                </div>
+            </div>
+            <div class="w3-row">
+
+                <div class="w3-col w3-container question">
+                    <h1 class="w3-center"><b>#{{ question.question_code }}</b></h1>
+                    <div class="w3-container w3-margin w3-card-4">
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Problem statement</b></h2>
+                            <h4>{{ question.question_text }}</h4>
+                        </div>
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Input Format</b></h2>
+                            <h4>{{ question.input_format }}</h4>
+                        </div>
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Constraints</b></h2>
+                            <h4>{{ question.constraints }}</h4>
+                        </div>
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Output Format</b></h2>
+                            <h4>{{ question.output_format }}</h4>
+                        </div>
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Sample Input</b></h2>
+                            <h4>{{ question.sample_input }}</h4>
+                        </div>
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Sample Output</b></h2>
+                            <h4>{{ question.sample_output }}</h4>
+                        </div>
+                        <div class="w3-margin w3-padding">
+                            <h2><b>Explanation</b></h2>
+                            <h4>{{ question.explanation }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-row">
+
+                <div class="w3-col w3-container" style="width:80%">
+                     <div>
+                         <div class="w3-container">
+                            {{ editor_form.textarea }}
+                         </div>
+                         <div class="w3-margin w3-right">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="Compile">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="Validate">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Submit">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Status">
+                         </div>
+                         <br>
+                         <div class="w3-container">
+                            {% if output %}
+                                 <div style="border: 2px solid #000;margin-top:50px">
+                                    {{ output | safe}}
+                                 </div>
+                             {% endif %}
+                         </div>
+
+                     </div>
+
+              </div>
+              <div class="w3-col w3-container" style="width:20%;padding-left:30px">
+                  {{ language_form | safe}}
+              </div>
+            </div>
+        </form><br>
+        <p>
+
+        </p>
+    </div>
+        <script>
+            var countDownDate = new Date("{{time}}");
+
+            var x = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+                var hours = "" + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = "" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = "" + Math.floor((distance % (1000 * 60)) / 1000);
+
+                pad="00";
+                document.getElementById("h").innerHTML = pad.substring(0, pad.length - hours.length) + hours;
+                document.getElementById("m").innerHTML = pad.substring(0, pad.length - minutes.length) + minutes;
+                document.getElementById("s").innerHTML = pad.substring(0, pad.length - seconds.length) + seconds;
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("timer").innerHTML = "EXPIRED";
+                }
+            }, 1000);
+
+            languagebox = document.getElementById("id_language");
+            languagebox.className+="w3-select";
+        </script>
+    </body>
+</html>
+
+<!--
+
+
+<tr>
                       <div style="z-index:1500; margin-top:30px">
                             <span onclick="document.getElementById('q1').style.display='block'" class="w3-btn w3-round-large">Question 1</span>
                             <div id="q1" class="w3-modal" style="z-index:100">
@@ -83,126 +190,4 @@
                             </div>
                       </div>
                       </tr>
-                      <tr>
-                      <div style="margin-top:30px">
-                            <span onclick="document.getElementById('q3').style.display='block'" class="w3-btn w3-round-large">Question 3</span>
-                            <div id="q3" class="w3-modal" style="z-index:100">
-                                <div class="w3-modal-content w3-animate-top w3-card-8">
-                                    <header class="w3-container w3-teal">
-                                        <span onclick="document.getElementById('q3').style.display='none'"
-                                        class="w3-closebtn">&times;</span>
-                                        <h2>Modal Header</h2>
-                                    </header>
-                                    <div class="w3-container">
-                                        <p>Some text..</p>
-                                        <p>Some text..</p>
-                                    </div>
-                                    <footer class="w3-container w3-teal">
-                                        <p>Modal Footer</p>
-                                    </footer>
-                                </div>
-                            </div>
-                      </div>
-                      <div style="margin-top:30px">
-                            <span onclick="document.getElementById('q4').style.display='block'" class="w3-btn w3-round-large">Question 4</span>
-                            <div id="q4" class="w3-modal" style="z-index:100">
-                                <div class="w3-modal-content w3-animate-top w3-card-8">
-                                    <header class="w3-container w3-teal">
-                                        <span onclick="document.getElementById('q4').style.display='none'"
-                                        class="w3-closebtn">&times;</span>
-                                        <h2>Modal Header</h2>
-                                    </header>
-                                    <div class="w3-container">
-                                        <p>Some text..</p>
-                                        <p>Some text..</p>
-                                    </div>
-                                    <footer class="w3-container w3-teal">
-                                        <p>Modal Footer</p>
-                                    </footer>
-                                </div>
-                            </div>
-                      </div>
-                      </tr>
-                      <tr>
-                      <div style="margin-top:30px">
-                            <span onclick="document.getElementById('q5').style.display='block'" class="w3-btn w3-round-large">Question 5</span>
-                            <div id="q5" class="w3-modal" style="z-index:100">
-                                <div class="w3-modal-content w3-animate-top w3-card-8">
-                                    <header class="w3-container w3-teal">
-                                        <span onclick="document.getElementById('q5').style.display='none'"
-                                        class="w3-closebtn">&times;</span>
-                                        <h2>Modal Header</h2>
-                                    </header>
-                                    <div class="w3-container">
-                                        <p>Some text..</p>
-                                        <p>Some text..</p>
-                                    </div>
-                                    <footer class="w3-container w3-teal">
-                                        <p>Modal Footer</p>
-                                    </footer>
-                                </div>
-                            </div>
-                      </div>
-                      </tr>
-                  </table>
-                  </center>
-              </div>
-              <div class="w3-col w3-container" style="width:60%">
-                  <div style="margin-top:60px">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="Compile">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="Validate">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Submit">
-                    <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Status">
-                      <div id="demo">
-                    <span id="h"></span>
-                          <span>:</span>
-                      <span id="m"></span>
-                          <span>:</span>
-                      <span id="s"></span>
-                          </div>
-                      <br>
-                    {{ editor_form.textarea }}
-
-                  </div>
-                  <div style="border: 2px solid #000;margin-top:30px">
-                      {{ output | safe}}
-                  </div>
-              </div>
-              <div class="w3-col w3-container" style="width:20%;padding-left:30px;margin-top:130px">
-                  {{ language_form | safe}}
-              </div>
-            </div>
-        </form><br>
-        <p>
-
-        </p>
-    </div>
-        <script>
-            var countDownDate = new Date("{{time}}");
-
-            var x = setInterval(function() {
-
-                var now = new Date().getTime();
-
-                var distance = countDownDate - now;
-
-                var hours = "" + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = "" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = "" + Math.floor((distance % (1000 * 60)) / 1000);
-
-                pad="00";
-                document.getElementById("h").innerHTML = pad.substring(0, pad.length - hours.length) + hours;
-                document.getElementById("m").innerHTML = pad.substring(0, pad.length - minutes.length) + minutes;
-                document.getElementById("s").innerHTML = pad.substring(0, pad.length - seconds.length) + seconds;
-
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("demo").innerHTML = "EXPIRED";
-                }
-            }, 1000);
-
-            languagebox = document.getElementById("id_language");
-            languagebox.className+="w3-select";
-        </script>
-    </body>
-</html>
+-->

@@ -89,7 +89,7 @@ def run(cmd, input, output, errors, timeout_sec):
 
 def compile(user_filename, user_code,language):
     errors=''
-    if language=='C':
+    if language == 'C':
         user_codefile = open(user_filename + '.c', 'w')
         user_codefile.write(user_code)
         user_codefile.close()
@@ -180,7 +180,6 @@ def contest(request):
     language_form= forms.create_language_form("C")()
     language_file="/static/codemirror2/mode/clike/clike.js"
 
-
     if request.method == 'POST':
         #print(request.POST.get('language'))
         if request.POST.get('language')=='C':
@@ -227,10 +226,28 @@ def contest(request):
                                       language, sample=True)
                 else:
                     result = errors
+            elif request.POST.get('submit'):
+                pass
             shutil.rmtree(dirname)
             editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
-    return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form,
+
+    if 'qid' not in request.GET:
+        return render_to_response('404.html')
+    question = Questions.objects.get(question_code=request.GET['qid'])
+    if not question:
+        return render_to_response('404.html')
+
+
+    return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form, 'question': question,
                                              'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time} )
+
+
+def questions(request):
+    question_objects = Questions.objects.all()
+    for i in range(len(question_objects)):
+        question_objects[i].question_text = question_objects[i].question_text[:150] + "...."
+    return render_to_response('questions.html', {'questions': question_objects})
+
 
 def login_view(request):
     if request.POST:
@@ -251,6 +268,10 @@ def login_view(request):
     return render_to_response("home.html", {'form': form})
 
 
+def not_found(request):
+    return render_to_response("404.html")
+
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('login')
@@ -261,7 +282,6 @@ def user_logged_in_handler(sender, request, user, **kwargs):
         UserLoginTime.objects.get(user=user)
     except:
         UserLoginTime.objects.create(user = user, login_time = datetime.datetime.now().strftime("%b %d, %Y %H:%M:%S"))
-
 
 
 user_logged_in.connect(user_logged_in_handler)

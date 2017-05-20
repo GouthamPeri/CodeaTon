@@ -1,0 +1,28 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel=stylesheet href="{% static 'w3.css' %}">
+        <style>
+            .xtra-margin {
+                margin-top: 50px;
+
+            }
+        </style>
+    </head>
+    <body>
+    <img src="{%static "acm_logo_final.png"%}" style="width:12%;padding-top:10px;float:left"></img>
+        <img src="{%static "preloader.png"%}" style="width:8%;padding-top:10px;float:right"></img>
+        <div class="w3-white w3-card-8 w3-padding-16 w3-center">
+            <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
+        </div>
+    <div class="xtra-margin w3-center">
+        <label class="w3-margin w3-xxlarge">404 NOT FOUND</label>
+        <p>The page you requested doesn't exist</p>
+    </div>
+
+
+    </body>
+</html>
