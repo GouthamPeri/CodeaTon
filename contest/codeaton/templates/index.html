@@ -86,9 +86,10 @@
                     </div>
                 </div>
             </div>
+            <h2 style="margin-left:32px"><b>Your code goes here:</b></h2>
             <div class="w3-row">
 
-                <div class="w3-col w3-container" style="width:80%">
+                <div class="w3-col w3-container w3-margin-top" style="width:80%">
                      <div>
                          <div class="w3-container">
                             {{ editor_form.textarea }}
@@ -96,7 +97,7 @@
                          <div class="w3-margin w3-right">
                              <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='compile' value="Compile">
                              <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='validate' value="Validate">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Submit">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" name='submit_answer' value="Submit">
                              <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue" value="Status">
                          </div>
                          <br>

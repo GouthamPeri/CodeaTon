@@ -19,25 +19,27 @@ import subprocess, shlex
 from threading import Timer
 from django.contrib.auth.signals import user_logged_in
 import json
+import traceback
 
 
 lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON':'text/x-python'}
 
 
-def save(user, question_no, program_code, status=0):
-    question_no = str(question_no)
+def save(user, question_no, program_code, status=0.0):
     try:
         team_status = Status.objects.get(team_name=user)
+        question = Questions.objects.get(question_code=question_no)
 
         pass_statuses = json.loads(team_status.status)
-        pass_statuses[question_no] = status
-        team_status.status = json.dumps(pass_statuses)
 
-        program_codes = json.loads(team_status.program_code)
-        program_codes[question_no] = program_code
-        team_status.program_code = json.dumps(program_codes)
-        print(team_status.program_code)
         if status > pass_statuses[question_no]:
+            program_codes = json.loads(team_status.program_code)
+            program_codes[question_no] = program_code
+            team_status.program_code = json.dumps(program_codes)
+            team_status.total_score -= int(pass_statuses[question_no] * question.question_marks)
+            pass_statuses[question_no] = status
+            team_status.status = json.dumps(pass_statuses)
+            team_status.total_score += int(status * question.question_marks)
             try:
                 times = json.loads(team_status.time)
             except:
@@ -50,22 +52,16 @@ def save(user, question_no, program_code, status=0):
 
 
     except Exception as e:
-        print(e)
+        question = Questions.objects.get(question_code=question_no)
         pass_statuses = {}
         program_codes = {}
         times = {}
         pass_statuses[question_no] = status
         program_codes[question_no] = program_code
-        if status > pass_statuses[question_no]:
-            try:
-                times = json.loads(team_status.time)
-            except:
-                times = {}
-
-            times[question_no] = str((datetime.datetime.now() - datetime.datetime.strptime(
-                UserLoginTime.objects.get(user=user).login_time, "%b %d, %Y %H:%M:%S")).total_seconds() / 60)
+        times[question_no] = str((datetime.datetime.now() - datetime.datetime.strptime(
+            UserLoginTime.objects.get(user=user).login_time, "%b %d, %Y %H:%M:%S")).total_seconds() / 60)
         Status.objects.create(team_name=user, status=json.dumps(pass_statuses),
-                              program_code=json.dumps(program_codes), time=json.dumps(times) if times else None)
+                              program_code=json.dumps(program_codes), time=json.dumps(times) if times else None,total_score=int(status * question.question_marks))
 
 
 def run(cmd, input, output, errors, timeout_sec):
@@ -151,7 +147,6 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
     elif language == "PYTHON":
         for filename in os.listdir(testcases_input_path):
             count += 1
-            #print(user_filename + '.o < ' + testcases_input_path + filename + ' > ' + user_filename + '.txt')
             errors = run('python -W ignore '+ user_filename + '.py ', testcases_input_path + filename,
                         user_filename + '.txt',user_filename + '_errors.txt',3)
             errors = open(user_filename + '_errors.txt').read()
@@ -164,8 +159,8 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
                           + open(user_filename + '.txt') .read()
 
     if pass_percent != count:
-        return output + '<br>Testcase pass percentage:' + str(100*pass_percent/count)
-    return 'All Testcases Passed!'
+        return (output + '<br>Testcase pass percentage:' + str(100*pass_percent/count), pass_percent/count)
+    return ('All Testcases Passed!',1)
 
 @login_required()
 def contest(request):
@@ -173,7 +168,6 @@ def contest(request):
     language='C'
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S")\
            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
-    print(time)
 
     EditorForm = forms.create_editor_form(lang_mode['C'], initial='//Please select your language first')
     editor_form = EditorForm()
@@ -181,7 +175,6 @@ def contest(request):
     language_file="/static/codemirror2/mode/clike/clike.js"
 
     if request.method == 'POST':
-        #print(request.POST.get('language'))
         if request.POST.get('language')=='C':
             language = request.POST.get('language')
             language_form = forms.create_language_form(language)()
@@ -202,32 +195,49 @@ def contest(request):
             language_form = forms.create_language_form(language)()
             editor_form = forms.create_editor_form(lang_mode['PYTHON'], open('initial/python.txt').read())()
             language_file="/static/codemirror2/mode/python/python.js"
-        if request.POST.get('compile') or request.POST.get('validate'):
+        if request.POST.get('compile') or request.POST.get('validate') or request.POST.get('submit_answer'):
             user_filename = str(datetime.datetime.now().microsecond)
-            dirname = 'executions\\' + user_filename
+            dirname = 'executions\\' + request.user.username + "_" + user_filename
             os.mkdir(dirname)
             #if request.POST.get('save'):
-
+            test_case_folder_name = "testcases/"+request.GET['qid']
             if request.POST.get('compile'):
                 result = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
                 if result is None:
                     result = "Compiled Successfully!"
-                    save(request.user, 1, request.POST['textarea'])
             elif request.POST.get('validate'):
                 errors = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
+                test_case_folder_name += "_sample/"
                 if language == "PYTHON":
                     user_codefile = open(dirname + '\\' + user_filename + '.py', 'w')
                     user_codefile.write(request.POST['textarea'])
                     user_codefile.close()
-                    result = validate(dirname + '\\' + user_filename, 'testcases/input/', 'testcases/output/',
+                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language, sample=True)
                 elif errors is None:
-                    result = validate(dirname + '\\' + user_filename, 'testcases/input/', 'testcases/output/',
+                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language, sample=True)
                 else:
                     result = errors
-            elif request.POST.get('submit'):
-                pass
+            elif request.POST.get('submit_answer'):
+                errors = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
+                test_case_folder_name += "_real/"
+                if language == "PYTHON":
+                    user_codefile = open(dirname + '\\' + user_filename + '.py', 'w')
+                    user_codefile.write(request.POST['textarea'])
+                    user_codefile.close()
+                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
+                                      language)
+                    save(request.user, request.GET['qid'], request.POST['textarea'], result[1])
+                    result = result[0]
+                elif errors is None:
+                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
+                                      language)
+                    save(request.user, request.GET['qid'], request.POST['textarea'], result[1])
+                    result = result[0]
+                else:
+                    result = errors
+
             shutil.rmtree(dirname)
             editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
 
