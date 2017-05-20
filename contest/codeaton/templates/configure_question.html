@@ -1,0 +1,125 @@
+{% load static %}
+<html>
+    <head>
+        <script src="{% static 'include.js' %}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel=stylesheet href="{% static 'w3.css' %}">
+        <title>Code-A-Ton Leaderboard</title>
+        <style>
+            a {
+                color: green;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="{%static "acm_logo_final.png"%}" style="width:12%;padding-top:10px;float:left"></img>
+        <img src="{%static "preloader.png"%}" style="width:8%;padding-top:10px;float:right"></img>
+        <div class="w3-white w3-card-8 w3-padding-16 w3-center">
+            <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
+        </div>
+        <div class="w3-container">
+
+            <div class="w3-left"><h3>{{ question.question_code }}</h3></div>
+            <div class="w3-left w3-margin">
+                <a href="contest_admin" class="w3-btn w3-link w3-blue w3-round w3-hover-gray">Back to Contest Administration</a>
+            </div>
+
+            <div class="w3-bar w3-blue">
+                <button class="w3-bar-item w3-btn w3-blue tablink w3-red" onclick="openTab(event,'Details')">Details</button>
+                <button class="w3-bar-item w3-btn w3-blue tablink" onclick="openTab(event,'Test Cases')">Test Cases</button>
+            </div>
+
+            <div id="Details" class="w3-container w3-border tab">
+                <table class="w3-margin-top" style="border-spacing: 20px;table-layout:fixed; width:90%">
+                    <tr>
+                        <td class="w3-center" width="30%">
+                            <b>Question code</b>
+                        </td>
+                        <td>
+                            <input type="text" class="w3-input w3-leftbar w3-border-blue" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Problem statement</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Input Format</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Constraints</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Output Format</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Sample Input</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Sample Output</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w3-center">
+                            <b>Explanation</b>
+                        </td>
+                        <td>
+                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue"></textarea>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div id="Test Cases" class="w3-container w3-border tab" style="display:none">
+                <h2>Edit Test Cases</h2>
+                <p>Testcases corner</p>
+            </div>
+
+        </div>
+
+    </body>
+    <script>
+        function openTab(evt, tabName) {
+          var i, x, tablinks;
+          x = document.getElementsByClassName("tab");
+          for (i = 0; i < x.length; i++) {
+              x[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablink");
+          for (i = 0; i < x.length; i++) {
+              tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+          }
+          document.getElementById(tabName).style.display = "block";
+          evt.currentTarget.className += " w3-red";
+        }
+    </script>
+</html>

@@ -11,11 +11,13 @@
             <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
         </div>
         <div class="w3-bar w3-right w3-black">
-            <a href="#"onclick="document.getElementById('id01').style.display='block'" style="width:33%" class="w3-bar-item w3-button w3-center">Login</a>
-            <a href="#" onclick=" document.getElementById('id02').style.display='block'" style="width:33%" class="w3-bar-item w3-button w3-center">
+            <a href="#"onclick="document.getElementById('id01').style.display='block'" style="width:20%" class="w3-bar-item w3-button w3-center">Login</a>
+            <a href="#" onclick=" document.getElementById('id02').style.display='block'" style="width:20%" class="w3-bar-item w3-button w3-center">
                 Register
             </a>
-            <a href="#" onclick=" document.getElementById('id03').style.display='block'" style="width:33%" class="w3-bar-item w3-button w3-right">About Us</a>
+            <a href="final_leaderboard" target="_blank" style="width:20%" class="w3-bar-item w3-button w3-center">Leaderboard</a>
+            <a href = "rules" target = "_blank" style="width:20%" class="w3-bar-item w3-button w3-center">Rules</a>
+            <a href="#" onclick=" document.getElementById('id03').style.display='block'" style="width:20%" class="w3-bar-item w3-center w3-button">About Us</a>
         </div>
         {% if error %}
             <div style="position:absolute; width:100%; z-index:100;" class="w3-center w3-panel w3-animate-opacity w3-red">
@@ -23,11 +25,16 @@
                 <h3>{{ error|safe }}</h3>
             </div>
         {% endif %}
-        <div class="w3-container w3-padding-16" style="background-color:#cccccc">
+        <div class="w3-container w3-center w3-padding-16" style="background-color:#cccccc">
             <div class="w3-container w3-center" style="padding-top:50px">
-                <img src="{% static "slide_1.jpg"%}" style="width:50%;margin-bottom:25px;margin-left:400px"  class="slides w3-animate-fading"></img>
-                <img src="{% static "slide_2.jpg"%}" style="width:50%;margin-bottom:25px;margin-left:400px"  class="slides w3-animate-fading"></img>
-                <img src="{% static "slide_3.jpg"%}" style="width:50%;margin-bottom:25px;margin-left:400px"  class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_1.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_2.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_3.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_4.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_5.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_6.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_7.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
+                <img src="{% static "slide_8.jpg"%}" style="margin-bottom:25px" align="middle" height="400px" class="slides w3-animate-fading"></img>
                 <script>
                     var myIndex = 0;
                     carousel();

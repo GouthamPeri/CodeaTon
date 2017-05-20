@@ -9,5 +9,9 @@ urlpatterns = [
     url(r'^leaderboard',views.leader_board),
     url(r'^logout',views.logout_view),
     url(r'^change_password',views.change_password),
+    url(r'^final_leaderboard',views.dummy_leader_board),
+    url(r'^rules',views.rules),
+    url(r'^configure_question', views.configure_question),
+    url(r'^contest_admin', views.contest_admin)
     # url(r'^header', views.header),
 ]

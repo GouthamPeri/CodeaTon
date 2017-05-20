@@ -285,6 +285,16 @@ def contest(request):
                                              'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time ,'username':username} )
 
 
+def contest_admin(request):
+    questions = Questions.objects.all()
+    return render_to_response("contest_admin.html", {'questions': questions})
+
+
+def configure_question(request):
+    print request.GET
+    return render_to_response("configure_question.html", {})
+
+
 def questions(request):
     question_objects = Questions.objects.all()
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
@@ -354,6 +364,11 @@ def leader_board(request):
     status_objects=Status.objects.order_by('-total_score','total_time')
     return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,'time':time})
 
+def dummy_leader_board(request):
+    status_objects = Status.objects.order_by('-total_score', 'total_time')
+    return render_to_response('leaderboard.html',
+                              {'leaderboard': status_objects})
+
 @login_required
 def change_password(request):
     error = ''
@@ -380,6 +395,8 @@ def change_password(request):
 
     return render_to_response('change_password.html', {'password_form':password_form, 'error': error,
                                                        'username':request.user.username,'time':time})
+def rules(request):
+    return render(request, 'rules.html')
 
 @register.filter
 def get_item(dictionary, key):
