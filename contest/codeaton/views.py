@@ -20,6 +20,7 @@ from threading import Timer
 from django.contrib.auth.signals import user_logged_in
 import json
 import traceback
+from django.template.defaulttags import register
 
 
 lang_mode={'C':'text/x-csrc','C++':'text/x-c++src','JAVA':'text/x-java','PYTHON':'text/x-python'}
@@ -261,9 +262,14 @@ def contest(request):
 
 def questions(request):
     question_objects = Questions.objects.all()
+    status_dict = Status.objects.get(team_name=request.user).status
+    json_acceptable_string = status_dict.replace("'", "\"")
+    status_dict = json.loads(json_acceptable_string)
+    for k in status_dict:
+        status_dict[k]*=100
     for i in range(len(question_objects)):
         question_objects[i].question_text = question_objects[i].question_text[:150] + "...."
-    return render_to_response('questions.html', {'questions': question_objects})
+    return render_to_response('questions.html', {'questions': question_objects,'status':status_dict},)
 
 
 def login_view(request):
@@ -275,7 +281,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if not user is None:
                 login(request, user)
-                return HttpResponseRedirect('/contest/main_ques')
+                return HttpResponseRedirect('/contest/questions')
             else:
                 return HttpResponse("Invalid Authentication")
         else:
@@ -304,5 +310,9 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 def leader_board(request):
     status_objects=Status.objects.order_by('-total_score','total_time')
     return render_to_response('status_leaderboard.html',{'forms': status_objects})
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 user_logged_in.connect(user_logged_in_handler)

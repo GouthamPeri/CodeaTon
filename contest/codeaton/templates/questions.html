@@ -33,7 +33,7 @@
                            </tr>
                            <tr><td><br></td></tr>
                            <tr>
-                               <td>Your score: 10/100</td>
+                               <td>Your score: {{ status|get_item:question.question_code }} / {{ question.question_marks }}</td>
                                <td colspan="4">
                                    <input onclick="submit('{{ question.question_code }}')" type="submit" class="w3-btn w3-blue w3-hover-green w3-round" value="Solve Question">
                                </td>
