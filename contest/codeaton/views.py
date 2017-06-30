@@ -286,13 +286,24 @@ def contest(request):
 
 
 def contest_admin(request):
+    if request.method == "POST":
+        question_codes = Questions.objects.values_list('question_code')
+        return render_to_response("configure_question.html", {'question_codes', question_codes})
     questions = Questions.objects.all()
     return render_to_response("contest_admin.html", {'questions': questions})
 
 
 def configure_question(request):
-    print request.GET
-    return render_to_response("configure_question.html", {})
+    if request.method == "POST":
+        Questions.objects.create(question_code = request.POST['question_code'], question_text = request.POST['problem_statement'],
+                                 question_marks = request.POST['marks'], input_format = request.POST['input_format'],
+                                 output_format  = request.POST['output_format'], sample_input = request.POST['sample_input'],
+                                 sample_output = request.POST['sample_output'], constraints = request.POST['constraints'],
+                                 explanation = request.POST['explanation'])
+        return HttpResponseRedirect('/contest/contest_admin/')
+
+    questions = Questions.objects.values_list('question_code',flat=True)
+    return render_to_response("configure_question.html", {'question_codes':questions})
 
 
 def questions(request):

@@ -12,37 +12,27 @@
         <div class="w3-white w3-card-8 w3-padding-16 w3-center">
             <h1 style="font-family: Georgia, serif;padding-left:180px"><b>CODE-A-TON</b></h1>
         </div>
+        <center>
+            <form method="post">
+                <button class="w3-btn w3-round w3-hover-grey">Create Question</button>
+            </form>
+        </center>
         <div style="margin-top:48px">
             <table class="w3-border w3-table w3-center w3-striped" style="width:70%" align="center">
             <tr>
                 <td><b>S. no</b></td>
                 <td><b>Question Code</b></td>
                 <td><b>Score</b></td>
-                <td></td>
             </tr>
             {% for question in questions %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ question.question_code }}</td>
                 <td>{{ question.question_marks }}</td>
-                <td width="10%">
-                    <button onclick="submit('{{ question.question_code }}')" class="w3-btn w3-blue w3-round">Edit</button>
-                </td>
             </tr>
             {% endfor %}
         </table>
         </div>
-        <form name="choose_ques" method="get" action="configure_question">
-            <input name="qid" id="qid" type="hidden" value=""/>
-        </form>
-        <script>
-            function submit(ques_code){
-                var form = document.forms['choose_ques']
-                var input = document.getElementById('qid')
-                input.value = ques_code
-                form.submit()
-            }
-        </script>
     </body>
     <script>
 

@@ -21,7 +21,7 @@
 
             <div class="w3-left"><h3>{{ question.question_code }}</h3></div>
             <div class="w3-left w3-margin">
-                <a href="contest_admin" class="w3-btn w3-link w3-blue w3-round w3-hover-gray">Back to Contest Administration</a>
+                <a href="/contest/contest_admin/" class="w3-btn w3-link w3-blue w3-round w3-hover-gray">Back to Contest Administration</a>
             </div>
 
             <div class="w3-bar w3-blue">
@@ -30,78 +30,103 @@
             </div>
 
             <div id="Details" class="w3-container w3-border tab">
-                <table class="w3-margin-top" style="border-spacing: 20px;table-layout:fixed; width:90%">
-                    <tr>
-                        <td class="w3-center" width="30%">
-                            <b>Question code</b>
-                        </td>
-                        <td>
-                            <input type="text" class="w3-input w3-leftbar w3-border-blue" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Problem statement</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Input Format</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Constraints</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Output Format</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Sample Input</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Sample Output</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue" ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w3-center">
-                            <b>Explanation</b>
-                        </td>
-                        <td>
-                            <textarea rows="5" class="w3-input w3-leftbar w3-border-blue"></textarea>
-                        </td>
-                    </tr>
+                <form method="POST" action="">
+                    <table class="w3-margin-top" style="border-spacing: 20px;table-layout:fixed; width:90%">
+                        <tr>
+                            <td class="w3-center" width="30%">
+                                <b>Question code</b>
+                            </td>
+                            <td>
+                                <input type="text" name="question_code" class="w3-input w3-leftbar w3-border-blue" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Problem statement</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="problem_statement" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Marks</b>
+                            </td>
+                            <td>
+                                <input type="number" name="marks" class="w3-input w3-leftbar w3-border-blue">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Input Format</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="input_format" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Constraints</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="constraints" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Output Format</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="output_format" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Sample Input</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="sample_input" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Sample Output</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="sample_output" class="w3-input w3-leftbar w3-border-blue" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w3-center">
+                                <b>Explanation</b>
+                            </td>
+                            <td>
+                                <textarea rows="5" name="explanation" class="w3-input w3-leftbar w3-border-blue"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button class="w3-btn w3-round w3-hover-grey">Create Question</button></td>
+                        </tr>
 
-                </table>
+                    </table>
+                </form>
             </div>
 
             <div id="Test Cases" class="w3-container w3-border tab" style="display:none">
                 <h2>Edit Test Cases</h2>
-                <p>Testcases corner</p>
+                <form method="POST" action="">
+                    <h4>Input</h4>
+                    <select name="item_id" class="w3-select w3-input w3-padding w3-margin" style="text-align-last:center;width:50%">
+                        {% for entry in question_codes %}
+                            <option value="{{ entry }}">{{ entry }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" class="w3-padding w3-margin w3-input w3-leftbar w3-border-blue">
+                    <h4>Output</h4>
+                    <input type="text" class="w3-padding w3-margin w3-input w3-leftbar w3-border-blue">
+                    <button class="w3-btn w3-round w3-hover-grey">Create Test Case</button>
+                </form>
             </div>
 
         </div>
