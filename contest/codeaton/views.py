@@ -108,7 +108,7 @@ def compile(user_filename, user_code,language):
         errors = open(user_filename + '_errors.txt').read()
 
     elif language == 'JAVA':
-        user_filename = user_filename.replace('\\','/')
+        user_filename = user_filename.replace('/','/')
         user_filename = user_filename[:user_filename.rfind('/')]
         user_codefile = open(user_filename + "/Main.java", 'w')
         user_codefile.write(user_code)
@@ -137,7 +137,7 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
                 pass_percent += 1
     elif language == "JAVA":
-        user_filename = user_filename.replace('\\', '/')
+        user_filename = user_filename.replace('/', '/')
         user_filename = user_filename[:user_filename.rfind('/')]
         for filename in os.listdir(testcases_input_path):
             count += 1
@@ -230,41 +230,41 @@ def contest(request):
             language_file="/static/codemirror2/mode/python/python.js"
         if request.POST.get('compile') or request.POST.get('validate') or request.POST.get('submit_answer'):
             user_filename = str(datetime.datetime.now().microsecond)
-            dirname = 'executions\\' + request.user.username + "_" + user_filename
+            dirname = 'executions/' + request.user.username + "_" + user_filename
             os.mkdir(dirname)
             #if request.POST.get('save'):
             test_case_folder_name = "testcases/"+request.GET['qid']
             if request.POST.get('compile'):
-                result = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
+                result = compile(dirname + '/' + user_filename, request.POST['textarea'], language)
                 if result is None:
                     result = "Compiled Successfully!"
             elif request.POST.get('validate'):
-                errors = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
+                errors = compile(dirname + '/' + user_filename, request.POST['textarea'], language)
                 test_case_folder_name += "_sample/"
                 if language == "PYTHON":
-                    user_codefile = open(dirname + '\\' + user_filename + '.py', 'w')
+                    user_codefile = open(dirname + '/' + user_filename + '.py', 'w')
                     user_codefile.write(request.POST['textarea'])
                     user_codefile.close()
-                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
+                    result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language, sample=True)
                 elif errors is None:
-                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
+                    result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language, sample=True)
                 else:
                     result = errors
             elif request.POST.get('submit_answer'):
-                errors = compile(dirname + '\\' + user_filename, request.POST['textarea'], language)
+                errors = compile(dirname + '/' + user_filename, request.POST['textarea'], language)
                 test_case_folder_name += "_real/"
                 if language == "PYTHON":
-                    user_codefile = open(dirname + '\\' + user_filename + '.py', 'w')
+                    user_codefile = open(dirname + '/' + user_filename + '.py', 'w')
                     user_codefile.write(request.POST['textarea'])
                     user_codefile.close()
-                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
+                    result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language)
                     save(request.user, request.GET['qid'], request.POST['textarea'],language, result[1])
                     result = result[0]
                 elif errors is None:
-                    result = validate(dirname + '\\' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
+                    result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language)
                     save(request.user, request.GET['qid'], request.POST['textarea'],language, result[1])
                     result = result[0]
