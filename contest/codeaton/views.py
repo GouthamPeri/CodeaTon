@@ -231,7 +231,7 @@ def contest(request):
         if request.POST.get('compile') or request.POST.get('validate') or request.POST.get('submit_answer'):
             user_filename = str(datetime.datetime.now().microsecond)
             dirname = 'executions/' + request.user.username + "_" + user_filename
-            os.mkdir(dirname)
+            os.makedirs(dirname)
             #if request.POST.get('save'):
             test_case_folder_name = "testcases/"+request.GET['qid']
             if request.POST.get('compile'):
