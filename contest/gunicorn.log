@@ -1,0 +1,309 @@
+[2017-07-02 15:45:35 +0000] [11490] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 15:45:35 +0000] [11490] [INFO] Listening at: http://127.0.0.1:8000 (11490)
+[2017-07-02 15:45:35 +0000] [11490] [INFO] Using worker: sync
+[2017-07-02 15:45:35 +0000] [11495] [INFO] Booting worker with pid: 11495
+[2017-07-02 15:45:35 +0000] [11496] [INFO] Booting worker with pid: 11496
+[2017-07-02 15:45:35 +0000] [11497] [INFO] Booting worker with pid: 11497
+[2017-07-02 15:48:54 +0000] [11556] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 15:48:54 +0000] [11556] [INFO] Listening at: http://127.0.0.1:8000 (11556)
+[2017-07-02 15:48:54 +0000] [11556] [INFO] Using worker: sync
+[2017-07-02 15:48:54 +0000] [11561] [INFO] Booting worker with pid: 11561
+[2017-07-02 15:48:54 +0000] [11564] [INFO] Booting worker with pid: 11564
+[2017-07-02 15:48:54 +0000] [11565] [INFO] Booting worker with pid: 11565
+[2017-07-02 15:56:12 +0000] [11614] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 15:56:12 +0000] [11614] [INFO] Listening at: http://127.0.0.1:8000 (11614)
+[2017-07-02 15:56:12 +0000] [11614] [INFO] Using worker: sync
+[2017-07-02 15:56:12 +0000] [11619] [INFO] Booting worker with pid: 11619
+[2017-07-02 15:56:12 +0000] [11619] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 578, in spawn_worker
+    worker.init_process()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+ImportError: No module named contest.wsgi
+[2017-07-02 15:56:12 +0000] [11619] [INFO] Worker exiting (pid: 11619)
+[2017-07-02 15:56:12 +0000] [11614] [INFO] Shutting down: Master
+[2017-07-02 15:56:12 +0000] [11614] [INFO] Reason: Worker failed to boot.
+[2017-07-02 15:58:30 +0000] [11623] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 15:58:30 +0000] [11623] [INFO] Listening at: http://127.0.0.1:8000 (11623)
+[2017-07-02 15:58:30 +0000] [11623] [INFO] Using worker: sync
+[2017-07-02 15:58:30 +0000] [11628] [INFO] Booting worker with pid: 11628
+[2017-07-02 15:58:30 +0000] [11631] [INFO] Booting worker with pid: 11631
+[2017-07-02 15:58:30 +0000] [11632] [INFO] Booting worker with pid: 11632
+[2017-07-02 16:02:38 +0000] [11821] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:02:38 +0000] [11821] [INFO] Listening at: http://127.0.0.1:8000 (11821)
+[2017-07-02 16:02:38 +0000] [11821] [INFO] Using worker: sync
+[2017-07-02 16:02:38 +0000] [11826] [INFO] Booting worker with pid: 11826
+[2017-07-02 16:02:38 +0000] [11829] [INFO] Booting worker with pid: 11829
+[2017-07-02 16:02:38 +0000] [11830] [INFO] Booting worker with pid: 11830
+[2017-07-02 16:03:30 +0000] [11837] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:03:30 +0000] [11837] [INFO] Listening at: http://127.0.0.1:8000 (11837)
+[2017-07-02 16:03:30 +0000] [11837] [INFO] Using worker: sync
+[2017-07-02 16:03:30 +0000] [11842] [INFO] Booting worker with pid: 11842
+[2017-07-02 16:03:30 +0000] [11845] [INFO] Booting worker with pid: 11845
+[2017-07-02 16:03:30 +0000] [11846] [INFO] Booting worker with pid: 11846
+[2017-07-02 16:04:08 +0000] [11870] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:04:08 +0000] [11870] [INFO] Listening at: http://127.0.0.1:8000 (11870)
+[2017-07-02 16:04:08 +0000] [11870] [INFO] Using worker: sync
+[2017-07-02 16:04:08 +0000] [11875] [INFO] Booting worker with pid: 11875
+[2017-07-02 16:04:08 +0000] [11878] [INFO] Booting worker with pid: 11878
+[2017-07-02 16:04:08 +0000] [11879] [INFO] Booting worker with pid: 11879
+[2017-07-02 16:10:54 +0000] [11490] [INFO] Handling signal: term
+[2017-07-02 16:10:54 +0000] [11496] [INFO] Worker exiting (pid: 11496)
+[2017-07-02 16:10:54 +0000] [11497] [INFO] Worker exiting (pid: 11497)
+[2017-07-02 16:10:54 +0000] [11495] [INFO] Worker exiting (pid: 11495)
+[2017-07-02 16:10:54 +0000] [11556] [INFO] Handling signal: term
+[2017-07-02 16:10:54 +0000] [11561] [INFO] Worker exiting (pid: 11561)
+[2017-07-02 16:10:54 +0000] [11564] [INFO] Worker exiting (pid: 11564)
+[2017-07-02 16:10:54 +0000] [11565] [INFO] Worker exiting (pid: 11565)
+[2017-07-02 16:10:54 +0000] [11623] [INFO] Handling signal: term
+[2017-07-02 16:10:54 +0000] [11632] [INFO] Worker exiting (pid: 11632)
+[2017-07-02 16:10:54 +0000] [11628] [INFO] Worker exiting (pid: 11628)
+[2017-07-02 16:10:54 +0000] [11631] [INFO] Worker exiting (pid: 11631)
+[2017-07-02 16:10:54 +0000] [11821] [INFO] Handling signal: term
+[2017-07-02 16:10:54 +0000] [11826] [INFO] Worker exiting (pid: 11826)
+[2017-07-02 16:10:54 +0000] [11829] [INFO] Worker exiting (pid: 11829)
+[2017-07-02 16:10:54 +0000] [11830] [INFO] Worker exiting (pid: 11830)
+[2017-07-02 16:10:54 +0000] [11837] [INFO] Handling signal: term
+[2017-07-02 16:10:54 +0000] [11842] [INFO] Worker exiting (pid: 11842)
+[2017-07-02 16:10:54 +0000] [11845] [INFO] Worker exiting (pid: 11845)
+[2017-07-02 16:10:54 +0000] [11846] [INFO] Worker exiting (pid: 11846)
+[2017-07-02 16:10:54 +0000] [11870] [INFO] Handling signal: term
+[2017-07-02 16:10:54 +0000] [11875] [INFO] Worker exiting (pid: 11875)
+[2017-07-02 16:10:54 +0000] [11878] [INFO] Worker exiting (pid: 11878)
+[2017-07-02 16:10:54 +0000] [11879] [INFO] Worker exiting (pid: 11879)
+[2017-07-02 16:10:54 +0000] [11556] [INFO] Shutting down: Master
+[2017-07-02 16:10:54 +0000] [11623] [INFO] Shutting down: Master
+[2017-07-02 16:10:54 +0000] [11837] [INFO] Shutting down: Master
+[2017-07-02 16:10:54 +0000] [11490] [INFO] Shutting down: Master
+[2017-07-02 16:10:54 +0000] [11870] [INFO] Shutting down: Master
+[2017-07-02 16:10:54 +0000] [11821] [INFO] Shutting down: Master
+[2017-07-02 16:14:35 +0000] [11958] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:14:35 +0000] [11958] [INFO] Listening at: http://127.0.0.1:8000 (11958)
+[2017-07-02 16:14:35 +0000] [11958] [INFO] Using worker: sync
+[2017-07-02 16:14:35 +0000] [11963] [INFO] Booting worker with pid: 11963
+[2017-07-02 16:14:35 +0000] [11964] [INFO] Booting worker with pid: 11964
+[2017-07-02 16:14:35 +0000] [11965] [INFO] Booting worker with pid: 11965
+[2017-07-02 16:17:10 +0000] [11982] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:17:10 +0000] [11982] [INFO] Listening at: http://127.0.0.1:8000 (11982)
+[2017-07-02 16:17:10 +0000] [11982] [INFO] Using worker: sync
+[2017-07-02 16:17:10 +0000] [11987] [INFO] Booting worker with pid: 11987
+[2017-07-02 16:17:10 +0000] [11990] [INFO] Booting worker with pid: 11990
+[2017-07-02 16:17:10 +0000] [11991] [INFO] Booting worker with pid: 11991
+[2017-07-02 16:18:59 +0000] [12022] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:18:59 +0000] [12022] [INFO] Listening at: http://127.0.0.1:8000 (12022)
+[2017-07-02 16:18:59 +0000] [12022] [INFO] Using worker: sync
+[2017-07-02 16:18:59 +0000] [12027] [INFO] Booting worker with pid: 12027
+[2017-07-02 16:18:59 +0000] [12028] [INFO] Booting worker with pid: 12028
+[2017-07-02 16:18:59 +0000] [12029] [INFO] Booting worker with pid: 12029
+[2017-07-02 16:22:32 +0000] [12042] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:22:32 +0000] [12042] [INFO] Listening at: http://127.0.0.1:8000 (12042)
+[2017-07-02 16:22:32 +0000] [12042] [INFO] Using worker: sync
+[2017-07-02 16:22:32 +0000] [12047] [INFO] Booting worker with pid: 12047
+[2017-07-02 16:22:32 +0000] [12048] [INFO] Booting worker with pid: 12048
+[2017-07-02 16:22:32 +0000] [12049] [INFO] Booting worker with pid: 12049
+[2017-07-02 16:26:30 +0000] [12064] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:26:30 +0000] [12064] [INFO] Listening at: http://127.0.0.1:8000 (12064)
+[2017-07-02 16:26:30 +0000] [12064] [INFO] Using worker: sync
+[2017-07-02 16:26:30 +0000] [12069] [INFO] Booting worker with pid: 12069
+[2017-07-02 16:26:30 +0000] [12072] [INFO] Booting worker with pid: 12072
+[2017-07-02 16:26:30 +0000] [12073] [INFO] Booting worker with pid: 12073
+[2017-07-02 16:27:22 +0000] [11958] [INFO] Handling signal: term
+[2017-07-02 16:27:22 +0000] [11963] [INFO] Worker exiting (pid: 11963)
+[2017-07-02 16:27:22 +0000] [11964] [INFO] Worker exiting (pid: 11964)
+[2017-07-02 16:27:22 +0000] [11965] [INFO] Worker exiting (pid: 11965)
+[2017-07-02 16:27:22 +0000] [11982] [INFO] Handling signal: term
+[2017-07-02 16:27:22 +0000] [11987] [INFO] Worker exiting (pid: 11987)
+[2017-07-02 16:27:22 +0000] [11990] [INFO] Worker exiting (pid: 11990)
+[2017-07-02 16:27:22 +0000] [11991] [INFO] Worker exiting (pid: 11991)
+[2017-07-02 16:27:22 +0000] [12022] [INFO] Handling signal: term
+[2017-07-02 16:27:22 +0000] [12027] [INFO] Worker exiting (pid: 12027)
+[2017-07-02 16:27:22 +0000] [12028] [INFO] Worker exiting (pid: 12028)
+[2017-07-02 16:27:22 +0000] [12029] [INFO] Worker exiting (pid: 12029)
+[2017-07-02 16:27:22 +0000] [12042] [INFO] Handling signal: term
+[2017-07-02 16:27:22 +0000] [12048] [INFO] Worker exiting (pid: 12048)
+[2017-07-02 16:27:22 +0000] [12049] [INFO] Worker exiting (pid: 12049)
+[2017-07-02 16:27:22 +0000] [12047] [INFO] Worker exiting (pid: 12047)
+[2017-07-02 16:27:22 +0000] [12064] [INFO] Handling signal: term
+[2017-07-02 16:27:22 +0000] [12072] [INFO] Worker exiting (pid: 12072)
+[2017-07-02 16:27:22 +0000] [12073] [INFO] Worker exiting (pid: 12073)
+[2017-07-02 16:27:22 +0000] [12069] [INFO] Worker exiting (pid: 12069)
+[2017-07-02 16:27:22 +0000] [12022] [INFO] Shutting down: Master
+[2017-07-02 16:27:22 +0000] [12042] [INFO] Shutting down: Master
+[2017-07-02 16:27:22 +0000] [11982] [INFO] Shutting down: Master
+[2017-07-02 16:27:22 +0000] [11958] [INFO] Shutting down: Master
+[2017-07-02 16:27:22 +0000] [12064] [INFO] Shutting down: Master
+[2017-07-02 16:27:40 +0000] [12084] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:27:40 +0000] [12084] [INFO] Listening at: http://127.0.0.1:8000 (12084)
+[2017-07-02 16:27:40 +0000] [12084] [INFO] Using worker: sync
+[2017-07-02 16:27:40 +0000] [12089] [INFO] Booting worker with pid: 12089
+[2017-07-02 16:27:40 +0000] [12090] [INFO] Booting worker with pid: 12090
+[2017-07-02 16:27:40 +0000] [12091] [INFO] Booting worker with pid: 12091
+[2017-07-02 16:31:15 +0000] [12084] [INFO] Handling signal: term
+[2017-07-02 16:31:15 +0000] [12089] [INFO] Worker exiting (pid: 12089)
+[2017-07-02 16:31:15 +0000] [12090] [INFO] Worker exiting (pid: 12090)
+[2017-07-02 16:31:15 +0000] [12091] [INFO] Worker exiting (pid: 12091)
+[2017-07-02 16:31:15 +0000] [12084] [INFO] Shutting down: Master
+[2017-07-02 16:36:19 +0000] [12317] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:36:19 +0000] [12317] [INFO] Listening at: http://127.0.0.1:8000 (12317)
+[2017-07-02 16:36:19 +0000] [12317] [INFO] Using worker: sync
+[2017-07-02 16:36:19 +0000] [12322] [INFO] Booting worker with pid: 12322
+[2017-07-02 16:36:19 +0000] [12322] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 578, in spawn_worker
+    worker.init_process()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+ImportError: No module named contest.wsgi
+[2017-07-02 16:36:19 +0000] [12322] [INFO] Worker exiting (pid: 12322)
+[2017-07-02 16:36:19 +0000] [12323] [INFO] Booting worker with pid: 12323
+[2017-07-02 16:36:19 +0000] [12323] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 578, in spawn_worker
+    worker.init_process()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/ubuntu/.virtualenvs/codeaton/local/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+ImportError: No module named contest.wsgi
+[2017-07-02 16:36:19 +0000] [12323] [INFO] Worker exiting (pid: 12323)
+[2017-07-02 16:36:19 +0000] [12317] [INFO] Shutting down: Master
+[2017-07-02 16:36:19 +0000] [12317] [INFO] Reason: Worker failed to boot.
+[2017-07-02 16:41:21 +0000] [12351] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:41:21 +0000] [12351] [INFO] Listening at: http://127.0.0.1:8000 (12351)
+[2017-07-02 16:41:21 +0000] [12351] [INFO] Using worker: sync
+[2017-07-02 16:41:21 +0000] [12356] [INFO] Booting worker with pid: 12356
+[2017-07-02 16:41:21 +0000] [12357] [INFO] Booting worker with pid: 12357
+[2017-07-02 16:41:21 +0000] [12358] [INFO] Booting worker with pid: 12358
+[2017-07-02 16:44:28 +0000] [12351] [INFO] Handling signal: term
+[2017-07-02 16:44:28 +0000] [12356] [INFO] Worker exiting (pid: 12356)
+[2017-07-02 16:44:28 +0000] [12357] [INFO] Worker exiting (pid: 12357)
+[2017-07-02 16:44:28 +0000] [12358] [INFO] Worker exiting (pid: 12358)
+[2017-07-02 16:44:28 +0000] [12351] [INFO] Shutting down: Master
+[2017-07-02 16:44:35 +0000] [12457] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:44:35 +0000] [12457] [INFO] Listening at: http://127.0.0.1:8000 (12457)
+[2017-07-02 16:44:35 +0000] [12457] [INFO] Using worker: sync
+[2017-07-02 16:44:35 +0000] [12462] [INFO] Booting worker with pid: 12462
+[2017-07-02 16:44:35 +0000] [12465] [INFO] Booting worker with pid: 12465
+[2017-07-02 16:44:35 +0000] [12466] [INFO] Booting worker with pid: 12466
+[2017-07-02 16:45:59 +0000] [12472] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:45:59 +0000] [12472] [INFO] Listening at: http://127.0.0.1:8000 (12472)
+[2017-07-02 16:45:59 +0000] [12472] [INFO] Using worker: sync
+[2017-07-02 16:45:59 +0000] [12477] [INFO] Booting worker with pid: 12477
+[2017-07-02 16:45:59 +0000] [12480] [INFO] Booting worker with pid: 12480
+[2017-07-02 16:45:59 +0000] [12481] [INFO] Booting worker with pid: 12481
+[2017-07-02 16:46:10 +0000] [12490] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:46:10 +0000] [12490] [INFO] Listening at: http://127.0.0.1:8000 (12490)
+[2017-07-02 16:46:10 +0000] [12490] [INFO] Using worker: sync
+[2017-07-02 16:46:10 +0000] [12495] [INFO] Booting worker with pid: 12495
+[2017-07-02 16:46:10 +0000] [12498] [INFO] Booting worker with pid: 12498
+[2017-07-02 16:46:10 +0000] [12501] [INFO] Booting worker with pid: 12501
+[2017-07-02 16:46:26 +0000] [12569] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:46:26 +0000] [12569] [INFO] Listening at: http://127.0.0.1:8000 (12569)
+[2017-07-02 16:46:26 +0000] [12569] [INFO] Using worker: sync
+[2017-07-02 16:46:26 +0000] [12574] [INFO] Booting worker with pid: 12574
+[2017-07-02 16:46:26 +0000] [12575] [INFO] Booting worker with pid: 12575
+[2017-07-02 16:46:26 +0000] [12578] [INFO] Booting worker with pid: 12578
+[2017-07-02 16:47:00 +0000] [12457] [INFO] Handling signal: term
+[2017-07-02 16:47:00 +0000] [12465] [INFO] Worker exiting (pid: 12465)
+[2017-07-02 16:47:00 +0000] [12466] [INFO] Worker exiting (pid: 12466)
+[2017-07-02 16:47:00 +0000] [12462] [INFO] Worker exiting (pid: 12462)
+[2017-07-02 16:47:00 +0000] [12472] [INFO] Handling signal: term
+[2017-07-02 16:47:00 +0000] [12480] [INFO] Worker exiting (pid: 12480)
+[2017-07-02 16:47:00 +0000] [12481] [INFO] Worker exiting (pid: 12481)
+[2017-07-02 16:47:00 +0000] [12477] [INFO] Worker exiting (pid: 12477)
+[2017-07-02 16:47:00 +0000] [12490] [INFO] Handling signal: term
+[2017-07-02 16:47:00 +0000] [12498] [INFO] Worker exiting (pid: 12498)
+[2017-07-02 16:47:00 +0000] [12501] [INFO] Worker exiting (pid: 12501)
+[2017-07-02 16:47:00 +0000] [12495] [INFO] Worker exiting (pid: 12495)
+[2017-07-02 16:47:00 +0000] [12569] [INFO] Handling signal: term
+[2017-07-02 16:47:00 +0000] [12578] [INFO] Worker exiting (pid: 12578)
+[2017-07-02 16:47:00 +0000] [12574] [INFO] Worker exiting (pid: 12574)
+[2017-07-02 16:47:00 +0000] [12575] [INFO] Worker exiting (pid: 12575)
+[2017-07-02 16:47:00 +0000] [12490] [INFO] Shutting down: Master
+[2017-07-02 16:47:00 +0000] [12569] [INFO] Shutting down: Master
+[2017-07-02 16:47:00 +0000] [12472] [INFO] Shutting down: Master
+[2017-07-02 16:47:00 +0000] [12457] [INFO] Shutting down: Master
+[2017-07-02 16:47:17 +0000] [12656] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:47:17 +0000] [12656] [INFO] Listening at: http://127.0.0.1:8000 (12656)
+[2017-07-02 16:47:17 +0000] [12656] [INFO] Using worker: sync
+[2017-07-02 16:47:17 +0000] [12661] [INFO] Booting worker with pid: 12661
+[2017-07-02 16:47:17 +0000] [12664] [INFO] Booting worker with pid: 12664
+[2017-07-02 16:47:17 +0000] [12665] [INFO] Booting worker with pid: 12665
+[2017-07-02 16:50:05 +0000] [12656] [INFO] Handling signal: term
+[2017-07-02 16:50:05 +0000] [12664] [INFO] Worker exiting (pid: 12664)
+[2017-07-02 16:50:05 +0000] [12665] [INFO] Worker exiting (pid: 12665)
+[2017-07-02 16:50:05 +0000] [12661] [INFO] Worker exiting (pid: 12661)
+[2017-07-02 16:50:05 +0000] [12656] [INFO] Shutting down: Master
+[2017-07-02 16:50:13 +0000] [12749] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:50:13 +0000] [12749] [INFO] Listening at: http://127.0.0.1:8000 (12749)
+[2017-07-02 16:50:13 +0000] [12749] [INFO] Using worker: sync
+[2017-07-02 16:50:13 +0000] [12754] [INFO] Booting worker with pid: 12754
+[2017-07-02 16:50:13 +0000] [12757] [INFO] Booting worker with pid: 12757
+[2017-07-02 16:50:13 +0000] [12760] [INFO] Booting worker with pid: 12760
+[2017-07-02 16:50:34 +0000] [12765] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:50:34 +0000] [12765] [INFO] Listening at: http://127.0.0.1:8000 (12765)
+[2017-07-02 16:50:34 +0000] [12765] [INFO] Using worker: sync
+[2017-07-02 16:50:34 +0000] [12770] [INFO] Booting worker with pid: 12770
+[2017-07-02 16:50:34 +0000] [12773] [INFO] Booting worker with pid: 12773
+[2017-07-02 16:50:34 +0000] [12774] [INFO] Booting worker with pid: 12774
+[2017-07-02 16:52:12 +0000] [12803] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 16:52:12 +0000] [12803] [INFO] Listening at: http://127.0.0.1:8000 (12803)
+[2017-07-02 16:52:12 +0000] [12803] [INFO] Using worker: sync
+[2017-07-02 16:52:12 +0000] [12808] [INFO] Booting worker with pid: 12808
+[2017-07-02 16:52:12 +0000] [12811] [INFO] Booting worker with pid: 12811
+[2017-07-02 16:52:12 +0000] [12812] [INFO] Booting worker with pid: 12812
+[2017-07-02 16:52:26 +0000] [12749] [INFO] Handling signal: term
+[2017-07-02 16:52:26 +0000] [12760] [INFO] Worker exiting (pid: 12760)
+[2017-07-02 16:52:26 +0000] [12754] [INFO] Worker exiting (pid: 12754)
+[2017-07-02 16:52:26 +0000] [12757] [INFO] Worker exiting (pid: 12757)
+[2017-07-02 16:52:26 +0000] [12765] [INFO] Handling signal: term
+[2017-07-02 16:52:26 +0000] [12770] [INFO] Worker exiting (pid: 12770)
+[2017-07-02 16:52:26 +0000] [12773] [INFO] Worker exiting (pid: 12773)
+[2017-07-02 16:52:26 +0000] [12774] [INFO] Worker exiting (pid: 12774)
+[2017-07-02 16:52:26 +0000] [12803] [INFO] Handling signal: term
+[2017-07-02 16:52:26 +0000] [12808] [INFO] Worker exiting (pid: 12808)
+[2017-07-02 16:52:26 +0000] [12811] [INFO] Worker exiting (pid: 12811)
+[2017-07-02 16:52:26 +0000] [12812] [INFO] Worker exiting (pid: 12812)
+[2017-07-02 16:52:26 +0000] [12765] [INFO] Shutting down: Master
+[2017-07-02 16:52:26 +0000] [12749] [INFO] Shutting down: Master
+[2017-07-02 16:52:26 +0000] [12803] [INFO] Shutting down: Master
+[2017-07-02 17:45:27 +0000] [14020] [INFO] Starting gunicorn 19.7.1
+[2017-07-02 17:45:27 +0000] [14020] [INFO] Listening at: http://127.0.0.1:8000 (14020)
+[2017-07-02 17:45:27 +0000] [14020] [INFO] Using worker: sync
+[2017-07-02 17:45:27 +0000] [14025] [INFO] Booting worker with pid: 14025
+[2017-07-02 17:45:27 +0000] [14028] [INFO] Booting worker with pid: 14028
+[2017-07-02 17:45:27 +0000] [14029] [INFO] Booting worker with pid: 14029
+[2017-07-02 18:08:25 +0000] [14020] [INFO] Handling signal: term
+[2017-07-02 18:08:25 +0000] [14025] [INFO] Worker exiting (pid: 14025)
+[2017-07-02 18:08:25 +0000] [14028] [INFO] Worker exiting (pid: 14028)
+[2017-07-02 18:08:25 +0000] [14029] [INFO] Worker exiting (pid: 14029)
+[2017-07-02 18:08:25 +0000] [14020] [INFO] Shutting down: Master
