@@ -291,13 +291,12 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def contest_admin(request):
     if request.method == "POST":
-        question_codes = Questions.objects.values_list('question_code')
-        return render_to_response("configure_question.html", {'question_codes', question_codes})
+        return HttpResponseRedirect('/contest/configure_question/')
     questions = Questions.objects.all()
     return render_to_response("contest_admin.html", {'questions': questions})
 
 @login_required
-@user_passes_test(is_admin)
+# @user_passes_test(is_admin)
 def configure_question(request):
     if request.method == "POST":
         Questions.objects.create(question_code = request.POST['question_code'], question_text = request.POST['problem_statement'],

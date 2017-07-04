@@ -96,11 +96,11 @@
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Sample Input</b></h2>
-                            <h4>{{ question.sample_input }}</h4>
+                            <h4>{{ question.sample_input.split|join:"<br>"|safe }}</h4>
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Sample Output</b></h2>
-                            <h4>{{ question.sample_output }}</h4>
+                            <h4>{{ question.sample_output.split|join:"<br>"|safe }}</h4>
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Explanation</b></h2>
