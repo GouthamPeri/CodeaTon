@@ -90,7 +90,7 @@ def run(cmd, input, output, errors, timeout_sec):
         timer.cancel()
         return open(errors).read()
 
-
+@login_required
 def compile(user_filename, user_code,language):
     errors=''
     if language == 'C':
@@ -123,7 +123,7 @@ def compile(user_filename, user_code,language):
          return errors.replace('\n', '<br>')
     return None
 
-
+@login_required
 def validate(user_filename, testcases_input_path, testcases_output_path, language, sample=False):
     count = 0.0
     pass_percent = 0.0
@@ -177,7 +177,7 @@ def get_saved_code(user,question_code,language):
     except Exception as e:
         return None
 
-@login_required()
+@login_required
 def contest(request):
     result=''
     language='C'
@@ -284,7 +284,11 @@ def contest(request):
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form, 'question': question,
                                              'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time ,'username':username} )
 
+def is_admin(user):
+    return user.groups.filter(name="admin").exists();
 
+@login_required
+@user_passes_test(is_admin)
 def contest_admin(request):
     if request.method == "POST":
         question_codes = Questions.objects.values_list('question_code')
@@ -292,7 +296,8 @@ def contest_admin(request):
     questions = Questions.objects.all()
     return render_to_response("contest_admin.html", {'questions': questions})
 
-
+@login_required
+@user_passes_test(is_admin)
 def configure_question(request):
     if request.method == "POST":
         Questions.objects.create(question_code = request.POST['question_code'], question_text = request.POST['problem_statement'],
@@ -305,7 +310,7 @@ def configure_question(request):
     questions = Questions.objects.values_list('question_code',flat=True)
     return render_to_response("configure_question.html", {'question_codes':questions})
 
-
+@login_required
 def questions(request):
     question_objects = Questions.objects.all()
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
@@ -351,11 +356,10 @@ def login_view(request):
             return HttpResponseRedirect('/contest/home')
     return render_to_response("home.html", {'form': LoginForm(),'reg_form' : RegistrationForm(),'error':error})
 
-
 def not_found(request):
     return render_to_response("404.html")
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('home')

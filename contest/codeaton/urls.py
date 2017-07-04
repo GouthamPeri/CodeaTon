@@ -1,5 +1,7 @@
 from . import views
 from django.conf.urls import url
+from django.contrib.staticfiles import views as v
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     #url(r'^$', views.contest),
@@ -12,6 +14,10 @@ urlpatterns = [
     url(r'^final_leaderboard',views.dummy_leader_board),
     url(r'^rules',views.rules),
     url(r'^configure_question', views.configure_question),
-    url(r'^contest_admin', views.contest_admin)
+    url(r'^contest_admin', views.contest_admin),
     # url(r'^header', views.header),
 ]
+#
+# urlpatterns += [
+#         url(r'^static/(?P<path>.*)$', v.serve),
+#     ]
