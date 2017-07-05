@@ -90,7 +90,7 @@ def run(cmd, input, output, errors, timeout_sec):
         timer.start()
         proc.communicate()
     finally:
-        proc.terminate()
+        #proc.terminate()
         error = open(errors).read()
         if error:
             timer.cancel()
