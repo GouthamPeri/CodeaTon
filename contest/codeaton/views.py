@@ -185,7 +185,7 @@ def get_saved_code(user,question_code,language):
     except Exception as e:
         return None
 
-
+@login_required
 def contest(request):
     result=''
     language='C'
