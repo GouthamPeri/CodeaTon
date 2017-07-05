@@ -320,6 +320,8 @@ def questions(request):
     question_objects = Questions.objects.all()
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
             + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
+
+    print time
     try:
         status_dict = Status.objects.get(team_name=request.user).status
         json_acceptable_string = status_dict.replace("'", "\"")
