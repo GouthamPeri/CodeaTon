@@ -295,14 +295,14 @@ def contest(request):
 def is_admin(user):
     return user.groups.filter(name="admin").exists();
 
-
+@user_passes_test(is_admin)
 def contest_admin(request):
     if request.method == "POST":
         return HttpResponseRedirect('/contest/configure_question/')
     questions = Questions.objects.all()
     return render_to_response("contest_admin.html", {'questions': questions})
 
-
+@user_passes_test(is_admin)
 def configure_question(request):
     if request.method == "POST":
         Questions.objects.create(question_code = request.POST['question_code'], question_text = request.POST['problem_statement'],
