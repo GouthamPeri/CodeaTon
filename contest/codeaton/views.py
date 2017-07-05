@@ -315,7 +315,7 @@ def configure_question(request):
     questions = Questions.objects.values_list('question_code',flat=True)
     return render_to_response("configure_question.html", {'question_codes':questions})
 
-
+@login_required
 def questions(request):
     question_objects = Questions.objects.all()
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
@@ -377,7 +377,7 @@ def user_logged_in_handler(sender, request, user, **kwargs):
     except:
         UserLoginTime.objects.create(user = user, login_time = datetime.datetime.now().strftime("%b %d, %Y %H:%M:%S"))
 
-
+@login_required
 def leader_board(request):
     username = request.user.username
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
@@ -390,7 +390,7 @@ def dummy_leader_board(request):
     return render_to_response('leaderboard.html',
                               {'leaderboard': status_objects})
 
-
+@login_required
 def change_password(request):
     error = ''
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
