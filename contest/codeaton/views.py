@@ -132,6 +132,7 @@ def compile(user_filename, user_code,language):
          return errors.replace('\n', '<br>')
     return None
 
+
 def validate(user_filename, testcases_input_path, testcases_output_path, language, sample=False):
     count = 0.0
     pass_percent = 0.0
