@@ -35,6 +35,16 @@ class Status(models.Model):
     total_score = models.IntegerField(default=0)
     total_time=models.FloatField(default=0.0)
 
-#status_obj = Status.objects.get(pk=1)
+class Registration(models.Model):
+    team_name = models.CharField(max_length=10)
+    member_1_name = models.CharField(max_length=30)
+    member_1_phone_no = models.IntegerField()
+    member_1_email = models.EmailField(max_length=30)
+    member_2_name = models.CharField(max_length=30,null=True,blank=True)
+    member_2_phone_no = models.IntegerField(null=True,blank=True)
+    member_2_email = models.EmailField(max_length=30,null=True,blank=True)
+
+
+    #status_obj = Status.objects.get(pk=1)
 #status_obj.status = {'name' : 'hello', 'type' : 'text'}
 #status_obj.save()

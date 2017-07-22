@@ -1,5 +1,6 @@
 from django import forms
 from codemirror2.widgets import CodeMirrorEditor
+from .models import *
 
 
 def create_editor_form(language_mode, initial):
@@ -33,3 +34,12 @@ class ChangePasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     password1 = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
+
+class RegisterForm(forms.Form):
+    team_name = forms.CharField(max_length=10)
+    member_1_name = forms.CharField(max_length=30)
+    member_1_phone_no = forms.IntegerField()
+    member_1_email = forms.EmailField(max_length=30)
+    member_2_name = forms.CharField(max_length=30)
+    member_2_phone_no = forms.IntegerField()
+    member_2_email =forms.EmailField(max_length=30)

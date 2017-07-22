@@ -425,3 +425,20 @@ def get_item(dictionary, key):
     return dictionary.get(key)
 
 user_logged_in.connect(user_logged_in_handler)
+
+def register(request):
+    form=RegisterForm()
+    if request.method == "POST":
+        num = request.POST['member_2_phone_no']
+        if not num:
+            num=None
+        Registration.objects.create(team_name=request.POST['team_name'],
+                                    member_1_name = request.POST['member_1_name'],
+                                    member_1_phone_no = request.POST['member_1_phone_no'],
+                                    member_1_email = request.POST['member_1_email'],
+                                    member_2_name = request.POST['member_2_name'],
+                                    member_2_phone_no = num,
+                                    member_2_email = request.POST['member_2_email'],
+                                    )
+        return render_to_response('register_thankyou.html',{})
+    return render_to_response('registration.html',{'form':form})

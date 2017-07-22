@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^rules',views.rules),
     url(r'^configure_question', views.configure_question),
     url(r'^contest_admin', views.contest_admin),
+    url(r'^register', views.register),
     # url(r'^header', views.header),
 ]
 #
