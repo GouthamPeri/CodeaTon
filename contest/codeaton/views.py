@@ -15,7 +15,8 @@ import shutil
 import datetime
 import filecmp
 from . import forms
-import subprocess, shlex
+import shlex
+import subprocess32 as subprocess
 from threading import Timer
 from django.contrib.auth.signals import user_logged_in
 import json
@@ -83,22 +84,19 @@ def save(user, question_no, program_code,language, status=0.0):
 
 
 def run(cmd, input, output, errors, timeout_sec):
-    proc = subprocess.Popen(cmd, stdin=open(input, 'r'), stdout=open(output, 'w+'), stderr=open(errors, 'w+'))
-    kill_proc = lambda p: p.kill()
-    timer = Timer(timeout_sec, kill_proc, [proc])
+    one = open(input, 'r')
+    two = open(output, 'w+')
+    three = open(errors, 'w+')
+
     try:
-        timer.start()
-        proc.communicate()
-    finally:
-        #proc.terminate()
-        error = open(errors).read()
-        if error:
-            timer.cancel()
-            return error
-        if not timer.is_alive():
-            open(errors, 'w+').write('Time limit Exceeded!\n')
-        timer.cancel()
+        op = subprocess.check_output(cmd.split(), stdin=one, stderr=three, timeout=timeout_sec)
+    except subprocess.CalledProcessError as e:
         return open(errors).read()
+    except subprocess.TimeoutExpired as e:
+        return "TIMEOUT"
+
+    two.write(op)
+
 
 def compile(user_filename, user_code,language):
     errors=''
@@ -166,7 +164,6 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             count += 1
             errors = run('python -W ignore '+ user_filename + '.py ', testcases_input_path + filename,
                         user_filename + '.txt',user_filename + '_errors.txt',3)
-            errors = open(user_filename + '_errors.txt').read()
             if errors:
                 return errors
             if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
@@ -425,28 +422,3 @@ def get_item(dictionary, key):
     return dictionary.get(key)
 
 user_logged_in.connect(user_logged_in_handler)
-
-def register(request):
-    error=""
-    if request.method == "POST":
-        num = request.POST['member_2_phone_no']
-        if not num:
-            num=None
-        try:
-            Registration.objects.create(team_name=request.POST['team_name'],
-                                        member_1_name = request.POST['member_1_name'],
-                                        member_1_phone_no = request.POST['member_1_phone_no'],
-                                        member_1_email = request.POST['member_1_email'],
-                                        member_2_name = request.POST['member_2_name'],
-                                        member_2_phone_no = num,
-                                        member_2_email = request.POST['member_2_email'],
-                                        )
-            new_user = User.objects.create()
-            new_user.username = request.POST['team_name']
-            new_user.set_password(request.POST['team_name'])
-            new_user.save()
-        except:
-            error = "Sorry the team name is already taken, please try giving a new team name"
-            return render_to_response('registration.html', {'error':error})
-        return render_to_response('register_thankyou.html',{'error':error})
-    return render_to_response('registration.html')
