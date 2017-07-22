@@ -422,3 +422,28 @@ def get_item(dictionary, key):
     return dictionary.get(key)
 
 user_logged_in.connect(user_logged_in_handler)
+
+def register(request):
+    error=""
+    if request.method == "POST":
+        num = request.POST['member_2_phone_no']
+        if not num:
+            num=None
+        try:
+            Registration.objects.create(team_name=request.POST['team_name'],
+                                        member_1_name = request.POST['member_1_name'],
+                                        member_1_phone_no = request.POST['member_1_phone_no'],
+                                        member_1_email = request.POST['member_1_email'],
+                                        member_2_name = request.POST['member_2_name'],
+                                        member_2_phone_no = num,
+                                        member_2_email = request.POST['member_2_email'],
+                                        )
+            new_user = User.objects.create()
+            new_user.username = request.POST['team_name']
+            new_user.set_password(request.POST['team_name'])
+            new_user.save()
+        except:
+            error = "Sorry the team name is already taken, please try giving a new team name"
+            return render_to_response('registration.html', {'error':error})
+        return render_to_response('register_thankyou.html',{'error':error})
+    return render_to_response('registration.html')
