@@ -26,8 +26,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contest/codeaton/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="325" column="15" selection-start-line="325" selection-start-column="15" selection-end-line="325" selection-end-column="15" />
+            <state relative-caret-position="138">
+              <caret line="193" column="145" selection-start-line="193" selection-start-column="145" selection-end-line="193" selection-end-column="145" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -869,14 +869,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contest/codeaton/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/site-packages/django/contrib/auth/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="173">
@@ -885,10 +877,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/contest/codeaton/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/contest/codeaton/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="325" column="15" selection-start-line="325" selection-start-column="15" selection-end-line="325" selection-end-column="15" />
+        <state relative-caret-position="138">
+          <caret line="193" column="145" selection-start-line="193" selection-start-column="145" selection-end-line="193" selection-end-column="145" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>

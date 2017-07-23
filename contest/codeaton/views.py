@@ -191,9 +191,7 @@ def get_saved_code(user,question_code,language):
 def contest(request):
     result=''
     language='C'
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=2000)
-    if time < datetime.datetime.now():
-        return HttpResponseRedirect('/contest/home')
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=4)
 
     time = time.strftime("%b %d, %Y %H:%M:%S")
 
@@ -323,12 +321,9 @@ def configure_question(request):
 
 @login_required
 def questions(request):
-    print "hai"
     question_objects = Questions.objects.all()
 
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=2000)
-    if time < datetime.datetime.now():
-	    return HttpResponseRedirect('/contest/home')
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=4)
 
     time = time.strftime("%b %d, %Y %H:%M:%S")
 
