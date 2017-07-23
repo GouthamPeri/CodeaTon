@@ -30,7 +30,7 @@ class Questions(models.Model):
 class Status(models.Model):
     team_name = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
     status = models.CharField(max_length=10000)
-    program_code = models.CharField(max_length=100000)
+    program_code = models.TextField()
     time = models.CharField(null=True, blank=True, max_length=1000)
     total_score = models.IntegerField(default=0)
     total_time=models.FloatField(default=0.0)
