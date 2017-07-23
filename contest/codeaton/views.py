@@ -449,7 +449,7 @@ def change_password(request):
         password_form = ChangePasswordForm()
 
     return render_to_response('change_password.html', {'password_form':password_form, 'error': error,
-                                                       'username':request.user.username,'time':time})
+                                                       'username':request.user.username,'h': h, 'm': m, 's': s,})
 def rules(request):
     return render(request, 'rules.html')
 
