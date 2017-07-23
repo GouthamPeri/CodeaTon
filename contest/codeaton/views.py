@@ -326,6 +326,8 @@ def questions(request):
     question_objects = Questions.objects.all()
 
     time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=2000)
+    print time
+    print datetime.now()
     if time < datetime.datetime.now():
 	    return HttpResponseRedirect('/contest/home')
 
