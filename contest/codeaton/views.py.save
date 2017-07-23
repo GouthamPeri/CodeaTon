@@ -30,7 +30,6 @@ def calctime(status):
     time_object=status.time
     total_time=0.0
     time_object = json.loads(time_object)
-    print type(time_object)
     for time in time_object.keys():
         total_time+=float(time_object[time])
     status.total_time = float(total_time)
@@ -191,11 +190,10 @@ def get_saved_code(user,question_code,language):
 def contest(request):
     result=''
     language='C'
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=1000)
+    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S")\
+           + datetime.timedelta(seconds=60)).s
     if time < datetime.datetime.now():
         return HttpResponseRedirect('/contest/home')
-
-    time = time.strftime("%b %d, %Y %H:%M:%S")
 
     saved_code=get_saved_code(request.user, request.GET['qid'], language)
     if not saved_code:
@@ -324,15 +322,8 @@ def configure_question(request):
 @login_required
 def questions(request):
     question_objects = Questions.objects.all()
-
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=1000)
-    print type(time)
-    if time < datetime.datetime.now():
-	return HttpResponseRedirect('/contest/home')
-
-    time = time.strftime("%b %d, %Y %H:%M:%S")
-
-
+    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
+            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
 
     print time
     try:
