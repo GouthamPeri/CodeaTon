@@ -32,7 +32,7 @@
         <script src="{{ language }}"></script>
 
     </head>
-    <body>
+    <body onload='location.href="#editor"'>
     <img src="{%static "acm_logo_final.png"%}" style="width:12%;padding-top:10px;float:left"></img>
         <img src="{%static "preloader.png"%}" style="width:8%;padding-top:10px;float:right"></img>
         <div class="w3-white w3-card-8 w3-padding-32 w3-center">
@@ -93,11 +93,12 @@
                 </div>
             </div>
             <h2 style="margin-left:32px"><b>Your code goes here:</b></h2>
+    <form action="" method="POST" name="editor">
             <div class="w3-row">
 
                 <div class="w3-col w3-container w3-margin-top" style="width:80%">
                      <div>
-                         <div class="w3-container" id="text">
+                         <div class="w3-container">
                             {{ editor_form.textarea }}
                          </div>
                          <div class="w3-margin w3-right">
