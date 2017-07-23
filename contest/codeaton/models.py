@@ -44,7 +44,3 @@ class Registration(models.Model):
     member_2_phone_no = models.IntegerField(null=True,blank=True)
     member_2_email = models.EmailField(max_length=30,null=True,blank=True)
 
-
-    #status_obj = Status.objects.get(pk=1)
-#status_obj.status = {'name' : 'hello', 'type' : 'text'}
-#status_obj.save()

@@ -191,7 +191,7 @@ def get_saved_code(user,question_code,language):
 def contest(request):
     result=''
     language='C'
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=1000)
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=2000)
     if time < datetime.datetime.now():
         return HttpResponseRedirect('/contest/home')
 
@@ -325,10 +325,9 @@ def configure_question(request):
 def questions(request):
     question_objects = Questions.objects.all()
 
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=1000)
-    print type(time)
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=2000)
     if time < datetime.datetime.now():
-	return HttpResponseRedirect('/contest/home')
+	    return HttpResponseRedirect('/contest/home')
 
     time = time.strftime("%b %d, %Y %H:%M:%S")
 
@@ -394,7 +393,7 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 def leader_board(request):
     username = request.user.username
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
-            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
+            + datetime.timedelta(seconds=2000)).strftime("%b %d, %Y %H:%M:%S")
     status_objects=Status.objects.order_by('-total_score','total_time')
     return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,'time':time})
 
@@ -407,7 +406,7 @@ def dummy_leader_board(request):
 def change_password(request):
     error = ''
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
-            + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
+            + datetime.timedelta(seconds=2000)).strftime("%b %d, %Y %H:%M:%S")
     password_form = ChangePasswordForm()
     if request.method == 'POST':
         if not authenticate(username=request.user.username, password=request.POST['password']) is None:
