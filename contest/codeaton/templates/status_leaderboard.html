@@ -54,7 +54,10 @@
             </table>
         </div>
      <script>
-            var countDownDate = new Date("{{time}}");
+            var countDownDate = new Date();
+            countDownDate.setHours(countDownDate.getHours()+{{h}});
+            countDownDate.setMinutes(countDownDate.getMinutes()+{{m}});
+            countDownDate.setSeconds(countDownDate.getSeconds()+{{s}});
 
             var x = setInterval(function() {
                 var now = new Date();

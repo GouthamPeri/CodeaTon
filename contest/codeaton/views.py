@@ -195,8 +195,10 @@ def contest(request):
     if time < datetime.datetime.now():
         return HttpResponseRedirect('/contest/home')
 
-    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
-    print time
+    time = str(time - datetime.datetime.now()).split(':')
+    h = time[0]
+    m = time[1]
+    s = time[2].split('.')[0]
 
     saved_code=get_saved_code(request.user, request.GET['qid'], language)
     if not saved_code:
@@ -297,7 +299,8 @@ def contest(request):
     username = request.user.username
 
     return render_to_response('index.html', {'output' : result, 'editor_form' : editor_form, 'question': question,
-                                             'language' : mark_safe(language_file), 'language_form' : language_form, 'time':time ,'username':username} )
+                                             'language' : mark_safe(language_file), 'language_form' : language_form,
+                                             'h': h , 'm': m, 's': s, 'username':username} )
 
 def is_admin(user):
     return user.groups.filter(name="admin").exists();
@@ -331,7 +334,10 @@ def questions(request):
     if time < datetime.datetime.now():
 	    return HttpResponseRedirect('/contest/home')
 
-    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
+    time = str(time - datetime.datetime.now()).split(':')
+    h = time[0]
+    m = time[1]
+    s = time[2].split('.')[0]
 
 
     print time
@@ -351,7 +357,8 @@ def questions(request):
     for i in range(len(question_objects)):
         question_objects[i].question_text = question_objects[i].question_text[:150] + "...."
     username = request.user.username
-    return render_to_response('questions.html', {'questions': question_objects, 'status': status_dict,'username':username, 'time':time},)
+    return render_to_response('questions.html', {'questions': question_objects, 'status': status_dict,'username':username,
+                                                 'h': h , 'm': m, 's': s,})
 
 def login_view(request):
     error = ''
@@ -395,9 +402,15 @@ def leader_board(request):
     username = request.user.username
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
             + datetime.timedelta(hours=3)).strftime("%b %d, %Y %H:%M:%S")
+
+    time = str(time - datetime.datetime.now()).split(':')
+    h = time[0]
+    m = time[1]
+    s = time[2].split('.')[0]
+
     status_objects=Status.objects.order_by('-total_score','total_time')
-    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
-    return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,'time':time})
+    return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,
+                                                         'h': h, 'm': m, 's': s,})
 
 def dummy_leader_board(request):
     status_objects = Status.objects.order_by('-total_score', 'total_time')
