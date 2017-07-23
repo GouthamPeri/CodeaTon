@@ -9,9 +9,9 @@ def create_editor_form(language_mode, initial):
             'mode': language_mode,
             'lineNumbers': True,
             'matchBrackets': True,
-	    'tabSize': 4,
-	    'smartIndent': False,            
-	    'lineWrapping': True,
+            'tabSize': 4,
+            'smartIndent': False,
+            'lineWrapping': True,
         }), initial=initial)
     return EditorForm
 

@@ -192,7 +192,10 @@ def contest(request):
     result=''
     language='C'
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S")\
-           + datetime.timedelta(hours=4)).strftime("%b %d, %Y %H:%M:%S")
+           + datetime.timedelta(seconds=60)).strftime("%b %d, %Y %H:%M:%S")
+    if time < datetime.datetime.now():
+        return HttpResponseRedirect('/contest/home')
+
     saved_code=get_saved_code(request.user, request.GET['qid'], language)
     if not saved_code:
         editor_form = forms.create_editor_form(lang_mode['C'], open('initial/c.txt').read())()
