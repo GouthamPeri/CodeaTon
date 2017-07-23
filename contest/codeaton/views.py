@@ -195,7 +195,7 @@ def contest(request):
     if time < datetime.datetime.now():
         return HttpResponseRedirect('/contest/home')
 
-    time = (time-datetime.datetime.now()).strftime("%H:%M:%S")
+    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
     print time
 
     saved_code=get_saved_code(request.user, request.GET['qid'], language)
@@ -331,8 +331,7 @@ def questions(request):
     if time < datetime.datetime.now():
 	    return HttpResponseRedirect('/contest/home')
 
-    time = (time - datetime.datetime.now()).strftime("%H:%M:%S")
-
+    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
 
 
     print time
@@ -397,7 +396,7 @@ def leader_board(request):
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
             + datetime.timedelta(hours=3)).strftime("%b %d, %Y %H:%M:%S")
     status_objects=Status.objects.order_by('-total_score','total_time')
-    time = (time - datetime.datetime.now()).strftime("%H:%M:%S")
+    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
     return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,'time':time})
 
 def dummy_leader_board(request):
@@ -410,7 +409,7 @@ def change_password(request):
     error = ''
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
             + datetime.timedelta(hours=3)).strftime("%b %d, %Y %H:%M:%S")
-    time = (time - datetime.datetime.now()).strftime("%H:%M:%S")
+    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
     password_form = ChangePasswordForm()
     if request.method == 'POST':
         if not authenticate(username=request.user.username, password=request.POST['password']) is None:
