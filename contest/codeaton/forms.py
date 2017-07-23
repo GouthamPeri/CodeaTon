@@ -8,7 +8,10 @@ def create_editor_form(language_mode, initial):
         textarea = forms.CharField(label='', widget=CodeMirrorEditor(options={
             'mode': language_mode,
             'lineNumbers': True,
-            'matchBrackets': True
+            'matchBrackets': True,
+	    'tabSize': 4,
+	    'smartIndent': False,            
+	    'lineWrapping': True,
         }), initial=initial)
     return EditorForm
 

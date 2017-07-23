@@ -115,7 +115,6 @@ def compile(user_filename, user_code,language):
         errors = open(user_filename + '_errors.txt').read()
 
     elif language == 'JAVA':
-        user_filename = user_filename.replace('/','/')
         user_filename = user_filename[:user_filename.rfind('/')]
         user_codefile = open(user_filename + "/Main.java", 'w')
         user_codefile.write(user_code)
@@ -140,15 +139,14 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             count += 1
             errors = run(user_filename + '.o', testcases_input_path + filename, user_filename + '.txt', user_filename + '_errors.txt', 2)
             if errors:
-                return errors
+                return [errors]
             cmpop = filecmp.cmp(user_filename + '.txt', testcases_output_path + filename)
             if cmpop:
                 pass_percent += 1
-            else:
-                print cmpop
             if sample:
-                output += '<br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
-                          + '<br><b>Actual:</b><br>' + open(user_filename + '.txt').read()
+                output += '<h3><b>Sample Test ' + str(int(count))  + '</b></h3><br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
+                          + '<br><b>Actual:</b><br>' + open(user_filename + '.txt').read() + '<hr>'
+
     elif language == "JAVA":
         user_filename = user_filename.replace('/', '/')
         user_filename = user_filename[:user_filename.rfind('/')]
@@ -158,12 +156,12 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
                         user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt',
                         user_filename + '/exceptions.txt',2)
             if errors:
-                return errors
+                return [errors]
             if filecmp.cmp(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt', testcases_output_path + filename):
                 pass_percent += 1
             if sample:
-                output += '<br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() + '<br><b>Actual:</b><br>' \
-                          + open(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt') .read()
+                output += '<h3><b>Sample Test ' + str(int(count))  + '</b></h3><br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
+                          + '<br><b>Actual:</b><br>' + open(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt').read() + '<hr>'
 
     elif language == "PYTHON":
         for filename in os.listdir(testcases_input_path):
@@ -171,16 +169,16 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             errors = run('python -W ignore '+ user_filename + '.py ', testcases_input_path + filename,
                         user_filename + '.txt',user_filename + '_errors.txt',3)
             if errors:
-                return errors
+                return [errors]
             if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
                 pass_percent += 1
             if sample:
-                output += '<br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
-                          + '<br><b>Actual:</b><br>' + open(user_filename + '.txt') .read()
+                output += '<h3><b>Sample Test ' + str(int(count))  + '</b></h3><br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
+                          + '<br><b>Actual:</b><br>' + open(user_filename + '.txt').read() + '<hr>'
 
     if pass_percent != count:
-        return (output + '<br>Testcase pass percentage:' + str(100*pass_percent/count), pass_percent/count)
-    return ('All Testcases Passed!',1)
+        return (output + '<h2 class="w3-label">' + ('Sample ' if sample else '') + 'Testcases pass percentage: ' + str(100*pass_percent/count) + '%</h2>', pass_percent/count)
+    return ('<h2 class="w3-label">' + ('All Sample Testcases passed! ' if sample else 'Solution Accepted, Congratulations!') + '</h2>',1)
 
 def get_saved_code(user,question_code,language):
     try:
@@ -258,7 +256,7 @@ def contest(request):
                     user_codefile.write(request.POST['textarea'])
                     user_codefile.close()
                     result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
-                                      language, sample=True)
+                                      language, sample=True)[0].replace('\n', '<br>')
                 elif errors is None:
                     result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
                                       language, sample=True)[0].replace('\n', '<br>')

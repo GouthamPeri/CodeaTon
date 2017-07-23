@@ -32,7 +32,7 @@
         <script src="{{ language }}"></script>
 
     </head>
-    <body>
+    <body onload='location.href="#text"'>
     <img src="{%static "acm_logo_final.png"%}" style="width:12%;padding-top:10px;float:left"></img>
         <img src="{%static "preloader.png"%}" style="width:8%;padding-top:10px;float:right"></img>
         <div class="w3-white w3-card-8 w3-padding-32 w3-center">
@@ -108,19 +108,17 @@
 
                 <div class="w3-col w3-container w3-margin-top" style="width:80%">
                      <div>
-                         <div class="w3-container">
+                         <div class="w3-container" id="text">
                             {{ editor_form.textarea }}
                          </div>
                          <div class="w3-margin w3-right">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='compile' value="Compile">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='validate' value="Validate">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='submit_answer' value="Submit">
-                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" value="Status">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='validate' value="Run Sample Tests">
+                             <input onclick = "document.forms['editor'].submit()" type="submit" class="w3-btn w3-blue w3-round" name='submit_answer' value="Submit Solution">
                          </div>
                          <br>
                          <div class="w3-container">
                             {% if output %}
-                                 <div style="border: 2px solid #000;margin-top:50px">
+                                 <div style="border: 2px solid #000;margin-top:50px" class="w3-padding">
                                     {{ output | safe}}
                                  </div>
                              {% endif %}
