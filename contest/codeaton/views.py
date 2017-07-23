@@ -30,7 +30,6 @@ def calctime(status):
     time_object=status.time
     total_time=0.0
     time_object = json.loads(time_object)
-    print type(time_object)
     for time in time_object.keys():
         total_time+=float(time_object[time])
     status.total_time = float(total_time)
@@ -191,7 +190,8 @@ def get_saved_code(user,question_code,language):
 def contest(request):
     result=''
     language='C'
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time,
+                                      "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
     if time < datetime.datetime.now():
         return HttpResponseRedirect('/contest/home')
 
@@ -330,7 +330,6 @@ def questions(request):
     question_objects = Questions.objects.all()
 
     time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
-    print type(time)
     if time < datetime.datetime.now():
 	    return HttpResponseRedirect('/contest/home')
 
@@ -340,7 +339,6 @@ def questions(request):
     s = time[2].split('.')[0]
 
 
-    print time
     try:
         status_dict = Status.objects.get(team_name=request.user).status
         json_acceptable_string = status_dict.replace("'", "\"")
@@ -400,8 +398,10 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 @login_required
 def leader_board(request):
     username = request.user.username
-    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
-            + datetime.timedelta(hours=3)).strftime("%b %d, %Y %H:%M:%S")
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time,
+                                      "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
+    if time < datetime.datetime.now():
+        return HttpResponseRedirect('/contest/home')
 
     time = str(time - datetime.datetime.now()).split(':')
     h = time[0]
@@ -420,9 +420,15 @@ def dummy_leader_board(request):
 @login_required
 def change_password(request):
     error = ''
-    time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
-            + datetime.timedelta(hours=3)).strftime("%b %d, %Y %H:%M:%S")
-    time = datetime.datetime.now().strftime("%b %d, %Y ") + str(time - datetime.datetime.now())
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time,
+                                      "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
+    if time < datetime.datetime.now():
+        return HttpResponseRedirect('/contest/home')
+
+    time = str(time - datetime.datetime.now()).split(':')
+    h = time[0]
+    m = time[1]
+    s = time[2].split('.')[0]
     password_form = ChangePasswordForm()
     if request.method == 'POST':
         if not authenticate(username=request.user.username, password=request.POST['password']) is None:
