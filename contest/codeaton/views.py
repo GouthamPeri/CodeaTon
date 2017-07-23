@@ -141,8 +141,14 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             errors = run(user_filename + '.o', testcases_input_path + filename, user_filename + '.txt', user_filename + '_errors.txt', 2)
             if errors:
                 return errors
-            if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
+            cmpop = filecmp.cmp(user_filename + '.txt', testcases_output_path + filename)
+            if cmpop:
                 pass_percent += 1
+            else:
+                print cmpop
+            if sample:
+                output += '<br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
+                          + '<br><b>Actual:</b><br>' + open(user_filename + '.txt').read()
     elif language == "JAVA":
         user_filename = user_filename.replace('/', '/')
         user_filename = user_filename[:user_filename.rfind('/')]
@@ -156,7 +162,7 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             if filecmp.cmp(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt', testcases_output_path + filename):
                 pass_percent += 1
             if sample:
-                output += '<br>Expected:<br>' + open(testcases_output_path + filename).read() + '<br>Actual:<br>' \
+                output += '<br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() + '<br><b>Actual:</b><br>' \
                           + open(user_filename + '/' + user_filename[user_filename.find('/')+1:] + '.txt') .read()
 
     elif language == "PYTHON":
@@ -169,8 +175,8 @@ def validate(user_filename, testcases_input_path, testcases_output_path, languag
             if filecmp.cmp(user_filename + '.txt', testcases_output_path + filename):
                 pass_percent += 1
             if sample:
-                output += '<br>Expected:<br>' + open(testcases_output_path + filename).read() + '<br>Actual:<br>' \
-                          + open(user_filename + '.txt') .read()
+                output += '<br><b>Expected:</b><br>' + open(testcases_output_path + filename).read() \
+                          + '<br><b>Actual:</b><br>' + open(user_filename + '.txt') .read()
 
     if pass_percent != count:
         return (output + '<br>Testcase pass percentage:' + str(100*pass_percent/count), pass_percent/count)
@@ -255,7 +261,7 @@ def contest(request):
                                       language, sample=True)
                 elif errors is None:
                     result = validate(dirname + '/' + user_filename, test_case_folder_name+'input/', test_case_folder_name+'output/',
-                                      language, sample=True)
+                                      language, sample=True)[0].replace('\n', '<br>')
                 else:
                     result = errors
             elif request.POST.get('submit_answer'):
@@ -447,3 +453,4 @@ def register(request):
             return render_to_response('registration.html', {'error':error})
         return render_to_response('register_thankyou.html',{'error':error})
     return render_to_response('registration.html')
+
