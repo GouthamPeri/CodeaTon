@@ -191,7 +191,7 @@ def get_saved_code(user,question_code,language):
 def contest(request):
     result=''
     language='C'
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=100)
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
     if time < datetime.datetime.now():
         return HttpResponseRedirect('/contest/home')
 
@@ -325,7 +325,7 @@ def configure_question(request):
 def questions(request):
     question_objects = Questions.objects.all()
 
-    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(seconds=100)
+    time = datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") + datetime.timedelta(hours=3)
     print type(time)
     if time < datetime.datetime.now():
 	    return HttpResponseRedirect('/contest/home')
@@ -394,7 +394,7 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 def leader_board(request):
     username = request.user.username
     time = (datetime.datetime.strptime(UserLoginTime.objects.get(user=request.user).login_time, "%b %d, %Y %H:%M:%S") \
-            + datetime.timedelta(seconds=100)).strftime("%b %d, %Y %H:%M:%S")
+            + datetime.timedelta(hours=3)).strftime("%b %d, %Y %H:%M:%S")
     status_objects=Status.objects.order_by('-total_score','total_time')
     return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,'time':time})
 
