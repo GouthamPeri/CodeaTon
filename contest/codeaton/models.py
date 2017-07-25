@@ -36,11 +36,11 @@ class Status(models.Model):
     total_time=models.FloatField(default=0.0)
 
 class Registration(models.Model):
-    team_name = models.CharField(max_length=10,primary_key=True)
+    team_name = models.CharField(max_length=30,primary_key=True)
     member_1_name = models.CharField(max_length=30)
-    member_1_phone_no = models.IntegerField()
+    member_1_phone_no = models.CharField(max_length=15)
     member_1_email = models.EmailField(max_length=30)
     member_2_name = models.CharField(max_length=30,null=True,blank=True)
-    member_2_phone_no = models.IntegerField(null=True,blank=True)
+    member_2_phone_no = models.CharField(max_length=15,null=True,blank=True)
     member_2_email = models.EmailField(max_length=30,null=True,blank=True)
 
