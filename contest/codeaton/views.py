@@ -408,10 +408,12 @@ def leader_board(request):
     m = time[1]
     s = time[2].split('.')[0]
 
-    status_objects=Status.objects.order_by('-total_score','total_time')
+    status_objects = Status.objects.filter(team_name=request.user)
     return render_to_response('status_leaderboard.html',{'leaderboard': status_objects,'username':username,
                                                          'h': h, 'm': m, 's': s,})
 
+@login_required
+@user_passes_test(is_admin)									 
 def dummy_leader_board(request):
     status_objects = Status.objects.order_by('-total_score', 'total_time')
     return render_to_response('leaderboard.html',
