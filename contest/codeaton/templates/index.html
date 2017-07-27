@@ -56,7 +56,7 @@
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Problem statement</b></h2>
-                            <h4>{{ question.question_text }}</h4>
+                            <h4>{{ question.question_text | safe}}</h4>
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Input Format</b></h2>
@@ -72,11 +72,11 @@
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Sample Input</b></h2>
-                            <h4>{{ question.sample_input.split|join:"<br>"|safe }}</h4>
+                            <h4>{{ question.sample_input | safe }}</h4>
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Sample Output</b></h2>
-                            <h4>{{ question.sample_output.split|join:"<br>"|safe }}</h4>
+                            <h4>{{ question.sample_output | safe }}</h4>
                         </div>
                         <div class="w3-margin w3-padding">
                             <h2><b>Explanation</b></h2>
@@ -87,7 +87,7 @@
             </div>
             <h2 style="margin-left:32px"><b>Your code goes here:</b></h2>
     <form action="" method="POST" name="editor">
-            <div class="w3-row">
+            <div class="w3-row" id="editor">
 
                 <div class="w3-col w3-container w3-margin-top" style="width:80%">
                      <div>
@@ -102,7 +102,7 @@
                          <div class="w3-container">
                             {% if output %}
                                  <div style="border: 2px solid #000;margin-top:50px" class="w3-padding">
-                                    {{ output | safe}}
+                                    <pre>{{ output | safe}}</pre>
                                  </div>
                              {% endif %}
                          </div>

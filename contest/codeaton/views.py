@@ -288,7 +288,7 @@ def contest(request):
                 else:
                     result = errors
 
-            shutil.rmtree(dirname)
+            # shutil.rmtree(dirname)
             editor_form = forms.create_editor_form(lang_mode[language],initial=request.POST['textarea'])
 
     if 'qid' not in request.GET:
